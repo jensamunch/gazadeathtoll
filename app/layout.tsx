@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 function HeaderWithClerk() {
   return (
     <header className="w-full border-b" style={{ borderColor: 'var(--border)' }}>
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <div className="px-6 py-3 flex items-center justify-between">
         <nav className="flex items-center gap-4">
           <Link href="/" className="font-semibold">Palestinian Deaths</Link>
           <SignedIn>
@@ -81,7 +81,7 @@ function HeaderWithClerk() {
 function HeaderWithoutClerk() {
   return (
     <header className="w-full border-b bg-yellow-50 dark:bg-yellow-900/20" style={{ borderColor: 'var(--border)' }}>
-      <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <div className="px-6 py-3 flex items-center justify-between">
         <nav className="flex items-center gap-4">
           <Link href="/" className="font-semibold">Palestinian Deaths</Link>
           <Link href="/admin" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Admin</Link>

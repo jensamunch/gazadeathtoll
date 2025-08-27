@@ -124,8 +124,8 @@ export default function Home() {
     return (
       <main className="p-6">
 
-        <div className="ag-theme-quartz" style={{ height: 600, width: '100%' }}>
-          <div className="flex items-center justify-center h-full">Loading...</div>
+        <div className="ag-theme-quartz">
+          <div className="py-24 flex items-center justify-center">Loading...</div>
         </div>
       </main>
     )
@@ -133,7 +133,10 @@ export default function Home() {
 
   return (
     <main className="p-6">
-      <div className="ag-theme-quartz" style={{ height: 600, width: '100%' }}>
+            <div className="my-2 text-sm text-muted-foreground">
+        Loaded {rowData.length.toLocaleString()} | Total matching row {totalRows.toLocaleString()}
+      </div>
+      <div className="ag-theme-quartz">
         <AgGridReact 
           theme={theme === 'dark' ? myThemeDark : myThemeLight} 
           rowData={rowData} 
@@ -141,7 +144,7 @@ export default function Home() {
           pagination={true}
           paginationPageSize={50}
           paginationPageSizeSelector={[25, 50, 100, 200]}
-
+          domLayout="autoHeight"
           rowSelection="multiple"
           suppressRowClickSelection={true}
           animateRows={true}
@@ -154,9 +157,7 @@ export default function Home() {
           onFilterChanged={onFilterChanged}
         />
       </div>
-      <div className="mt-2 text-sm text-muted-foreground">
-        Loaded {rowData.length.toLocaleString()} | Total matching row {totalRows.toLocaleString()}
-      </div>
+
     </main>
   )
 }
