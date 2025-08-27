@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Row {
+  id        String   @id @default(cuid())
+  data      Json
+  createdAt DateTime @default(now())
+}
+
+enum Sex {
+  m
+  f
+}
+
+model Person {
+  // CSV id column appears numeric but can be stored safely as string
+  id        String   @id
+  name      String
+  enName    String   @map("en_name")
+  age       Int?
+  dob       DateTime? @db.Date
+  sex       Sex?
+  source    String?
+  createdAt DateTime @default(now())
+}

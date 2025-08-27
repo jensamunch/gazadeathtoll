@@ -1,5 +1,53 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## What is this?
+
+An example app that lets admins upload a CSV which is stored in Postgres via Prisma, and displays the data publicly using AG Grid. Authentication is powered by Clerk.
+
+## Prerequisites
+
+- Node 18+
+- Postgres database
+- Clerk account (for auth)
+
+## Environment
+
+See `ENVIRONMENT.md` for required environment variables. Create a `.env.local` with your values.
+
+## Setup
+
+1. Install deps:
+
+```bash
+npm install
+```
+
+2. Generate Prisma client and run migrations (model is simple and migration-less by default):
+
+```bash
+npx prisma generate
+# If you want to create the table automatically via SQL migration, you can also run:
+# npx prisma db push
+```
+
+3. Start the app:
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000.
+
+## Admin
+
+- Add your Clerk user id(s) to `ADMIN_CLERK_IDS` in `.env.local`.
+- Visit `/admin` to upload a CSV. Upload replaces the entire dataset.
+
+## API
+
+- `GET /api/rows` returns stored rows ordered by `createdAt desc`.
+- `POST /api/upload` accepts a `multipart/form-data` upload with `file` (.csv). Protected by Clerk and `ADMIN_CLERK_IDS`.
+
 ## Getting Started
 
 First, run the development server:

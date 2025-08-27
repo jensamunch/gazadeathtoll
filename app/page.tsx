@@ -1,103 +1,162 @@
-import Image from "next/image";
+'use client'
+import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useTheme } from 'next-themes'
+import { AgGridReact } from 'ag-grid-react'
+import { ModuleRegistry, AllCommunityModule, themeQuartz, colorSchemeDark, colorSchemeLight, ColDef, FilterModel } from 'ag-grid-community'
+
+const myThemeLight = themeQuartz.withPart(colorSchemeLight)
+const myThemeDark = themeQuartz.withPart(colorSchemeDark)
+
+// Register AG Grid community modules (required since v34)
+ModuleRegistry.registerModules([AllCommunityModule])
+
+// Define types for our data
+type Person = {
+  id: string
+  name: string
+  enName: string
+  age?: number
+  dob?: string
+  sex?: 'm' | 'f'
+  source?: string
+  createdAt: string
+}
+
+type RowData = {
+  id: string
+  data: Record<string, unknown>
+  createdAt: string
+}
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [rowData, setRowData] = useState<Person[]>([])
+  const { theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [totalRows, setTotalRows] = useState(0)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const fetchData = useCallback(async (filters: FilterModel = {}) => {
+    const params = new URLSearchParams()
+    params.append('limit', '1000')
+    
+    // Add filter parameters
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value.filterType) {
+        console.log(`Processing filter for ${key}:`, value)
+        switch (value.filterType) {
+          case 'number':
+            if (value.type && value.filter !== undefined) {
+              const val = parseInt(value.filter.toString())
+              console.log(`Number filter: type="${value.type}", value=${val}`)
+              if (value.type === 'greaterThan' || value.type === 'gt') {
+                params.append(key, `>${val}`)
+              } else if (value.type === 'lessThan' || value.type === 'lt') {
+                params.append(key, `<${val}`)
+              } else if (value.type === 'greaterThanOrEqual' || value.type === 'gte') {
+                params.append(key, `>=${val}`)
+              } else if (value.type === 'lessThanOrEqual' || value.type === 'lte') {
+                params.append(key, `<=${val}`)
+              } else if (value.type === 'equals' || value.type === 'eq') {
+                params.append(key, val.toString())
+              } else {
+                console.log(`Unknown type: ${value.type}`)
+              }
+            }
+            break
+          case 'text':
+            if (value.filter) {
+              params.append(key, value.filter)
+            }
+            break
+          case 'set':
+            if (value.values && value.values.length > 0) {
+              params.append(key, value.values[0])
+            }
+            break
+        }
+      }
+    })
+
+    console.log('Sending API request with params:', params.toString())
+    
+    try {
+      const response = await fetch(`/api/rows?${params}`)
+      const data = await response.json()
+      console.log('API Response with filters:', data)
+      
+      const rows = data.data || []
+      setRowData(rows)
+      setTotalRows(data.pagination?.total || rows.length)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  const onFilterChanged = useCallback((event: any) => {
+    const filterModel = event.api.getFilterModel()
+    console.log('Filter changed:', filterModel)
+    console.log('Filter model keys:', Object.keys(filterModel))
+    Object.entries(filterModel).forEach(([key, value]) => {
+      console.log(`Filter for ${key}:`, JSON.stringify(value, null, 2))
+    })
+    fetchData(filterModel)
+  }, [fetchData])
+
+  const columnDefs = useMemo((): ColDef[] => {
+    const keySet = new Set<string>()
+    for (const row of rowData) {
+      if (row && typeof row === 'object' && !Array.isArray(row)) {
+        Object.keys(row).forEach((k) => keySet.add(k))
+      }
+    }
+    const keys = Array.from(keySet)
+    return keys.map((k) => ({ field: k }))
+  }, [rowData])
+
+  if (!mounted) {
+    return (
+      <main className="p-6">
+
+        <div className="ag-theme-quartz" style={{ height: 600, width: '100%' }}>
+          <div className="flex items-center justify-center h-full">Loading...</div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    )
+  }
+
+  return (
+    <main className="p-6">
+      <div className="ag-theme-quartz" style={{ height: 600, width: '100%' }}>
+        <AgGridReact 
+          theme={theme === 'dark' ? myThemeDark : myThemeLight} 
+          rowData={rowData} 
+          columnDefs={columnDefs} 
+          pagination={true}
+          paginationPageSize={50}
+          paginationPageSizeSelector={[25, 50, 100, 200]}
+
+          rowSelection="multiple"
+          suppressRowClickSelection={true}
+          animateRows={true}
+          defaultColDef={{
+            minWidth: 100,
+            flex: 1,
+            filter: true,
+            floatingFilter: true,
+          }}
+          onFilterChanged={onFilterChanged}
+        />
+      </div>
+      <div className="mt-2 text-sm text-muted-foreground">
+        Loaded {rowData.length.toLocaleString()} | Total matching row {totalRows.toLocaleString()}
+      </div>
+    </main>
+  )
 }
