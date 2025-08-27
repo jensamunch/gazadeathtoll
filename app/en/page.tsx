@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import Slideshow from './_components/Slideshow'
+import Slideshow from '../_components/Slideshow'
 
 type Person = {
   id: string
@@ -18,46 +18,46 @@ type Person = {
   createdAt: string
 }
 
-// Arabic translations
+// English translations
 const t = {
-  display: 'عرض',
-  filters: 'مرشحات',
-  view: 'طريقة العرض',
-  rows: 'صفوف',
-  name: 'اسم',
-  sex: 'جنس',
-  age: 'عمر',
-  list: 'قائمة',
-  gallery: 'معرض',
-  slideshow: 'عرض شرائح',
-  all: 'الكل',
-  any: 'أي',
-  reset: 'إعادة تعيين',
-  filterByName: 'البحث بالاسم',
-  value: 'قيمة',
-  loaded: 'محمل',
-  totalMatching: 'إجمالي المطابقة',
-  id: 'معرف',
-  englishName: 'الاسم الإنجليزي',
-  dateOfBirth: 'تاريخ الميلاد',
-  deathOfDeath: 'موت الموت',
-  category: 'فئة',
-  source: 'مصدر',
-  image: 'صورة',
-  loading: 'جاري التحميل...',
-  noResults: 'لا توجد نتائج',
-  upload: 'تحميل',
-  noImagesFound: 'لم يتم العثور على صور',
-  page: 'صفحة',
-  of: 'من',
-  proposeEdit: 'اقتراح تعديل',
-  cancel: 'إلغاء',
-  proposing: 'جاري الاقتراح...',
-  proposeEditButton: 'اقتراح تعديل',
-  unknown: 'غير معروف'
+  display: 'Display',
+  filters: 'Filters',
+  view: 'View',
+  rows: 'Rows',
+  name: 'Name',
+  sex: 'Sex',
+  age: 'Age',
+  list: 'List',
+  gallery: 'Gallery',
+  slideshow: 'Slideshow',
+  all: 'All',
+  any: 'Any',
+  reset: 'Reset',
+  filterByName: 'Filter by name',
+  value: 'Value',
+  loaded: 'Loaded',
+  totalMatching: 'Total matching',
+  id: 'ID',
+  englishName: 'English Name',
+  dateOfBirth: 'Date of birth',
+  deathOfDeath: 'Death of death',
+  category: 'Category',
+  source: 'Source',
+  image: 'Image',
+  loading: 'Loading…',
+  noResults: 'No results',
+  upload: 'Upload',
+  noImagesFound: 'No images found',
+  page: 'Page',
+  of: 'of',
+  proposeEdit: 'Propose Edit',
+  cancel: 'Cancel',
+  proposing: 'Proposing…',
+  proposeEditButton: 'Propose edit',
+  unknown: 'Unknown'
 }
 
-export default function Home() {
+export default function EnglishHome() {
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<Person[]>([])
   const [total, setTotal] = useState(0)
@@ -304,7 +304,7 @@ export default function Home() {
                         />
                       ) : (
                         <Button asChild variant="outline" size="sm">
-                          <a href="/admin">{t.upload}</a>
+                          <a href="/en/admin">{t.upload}</a>
                         </Button>
                       )}
                     </div>
@@ -411,7 +411,7 @@ function EditForm({ person, imageUrl, onClose, onSaved, translations: t }: { per
             <img src={imageUrl} alt={person.name || person.enName || person.id} className="w-28 aspect-square rounded-md object-cover" />
           ) : (
             <div className="w-28 aspect-square flex items-center justify-center bg-muted rounded-md">
-              <Button asChild variant="outline" size="sm"><a href="/admin">{t.upload}</a></Button>
+              <Button asChild variant="outline" size="sm"><a href="/en/admin">{t.upload}</a></Button>
             </div>
           )}
         </div>

@@ -99,3 +99,18 @@ export async function GET(request: Request) {
     return NextResponse.json([])
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json()
+    const { id, ...data } = body || {}
+    if (!id) {
+      return NextResponse.json({ error: 'Missing id' }, { status: 400 })
+    }
+    const updated = await prisma.person.update({ where: { id }, data })
+    return NextResponse.json({ ok: true, data: updated })
+  } catch (err) {
+    console.error('API PUT Error:', err)
+    return NextResponse.json({ ok: false, error: 'Update failed' }, { status: 500 })
+  }
+}
