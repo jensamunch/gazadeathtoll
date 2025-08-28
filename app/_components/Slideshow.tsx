@@ -7,10 +7,10 @@ type Person = {
   id: string
   name: string
   enName: string
-  age?: number
-  dob?: string
-  sex?: 'm' | 'f'
-  source?: string
+  age?: number | null
+  dob?: string | null
+  sex?: 'm' | 'f' | null
+  source?: string | null
   createdAt: string
 }
 

@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     console.log('API: Raw filter parameters:', { ageFilter, sexFilter, nameFilter })
     
     // Build where clause for filtering
-    const where: any = {}
+    const where: Record<string, unknown> = {}
     
     if (ageFilter) {
       console.log('Processing age filter:', ageFilter)

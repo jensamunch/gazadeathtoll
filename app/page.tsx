@@ -11,10 +11,10 @@ type Person = {
   id: string
   name: string
   enName: string
-  age?: number
-  dob?: string
-  sex?: 'm' | 'f'
-  source?: string
+  age?: number | null
+  dob?: string | null
+  sex?: 'm' | 'f' | null
+  source?: string | null
   createdAt: string
 }
 
@@ -252,7 +252,7 @@ export default function Home() {
                   <TableCell>{dodForId(p.id)}</TableCell>
                   <TableCell className="uppercase">{p.sex ?? ''}</TableCell>
                   <TableCell className="capitalize">{categoryForId(p.id)}</TableCell>
-                  <TableCell className="truncate max-w-[20ch]" title={p.source}>{p.source}</TableCell>
+                  <TableCell className="truncate max-w-[20ch]" title={p.source ?? undefined}>{p.source ?? ''}</TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       {hasImageForId(p.id) ? (
@@ -345,7 +345,7 @@ function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imag
   const [form, setForm] = useState<Person>(person)
   const [saving, setSaving] = useState(false)
 
-  const updateField = (key: keyof Person, value: any) => setForm((f) => ({ ...f, [key]: value }))
+  const updateField = <K extends keyof Person>(key: K, value: Person[K]) => setForm((f) => ({ ...f, [key]: value }))
 
   const save = async () => {
     setSaving(true)
@@ -391,7 +391,7 @@ function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imag
           </div>
           <div>
             <label className="text-sm text-muted-foreground">Sex</label>
-            <select className="h-9 rounded-md border bg-background px-2 text-sm w-full" value={form.sex ?? ''} onChange={(e) => updateField('sex', e.target.value || null)}>
+            <select className="h-9 rounded-md border bg-background px-2 text-sm w-full" value={form.sex ?? ''} onChange={(e) => updateField('sex', (e.target.value as 'm' | 'f') || null)}>
               <option value="">Unknown</option>
               <option value="m">m</option>
               <option value="f">f</option>
