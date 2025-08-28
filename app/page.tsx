@@ -33,9 +33,7 @@ export default function Home() {
 
   // Filters
   const [nameFilter, setNameFilter] = useState('')
-  const [sexFilter, setSexFilter] = useState<'all' | 'm' | 'f'>('all')
-  const [ageCmp, setAgeCmp] = useState<'>' | '>=' | '=' | '<=' | '<' | ''>('')
-  const [ageVal, setAgeVal] = useState<string>('')
+  const [ageMax, setAgeMax] = useState<number | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -62,8 +60,9 @@ export default function Home() {
       params.set('page', String(page))
       params.set('limit', String(limit))
       if (nameFilter.trim()) params.set('name', nameFilter.trim())
-      if (sexFilter !== 'all') params.set('sex', sexFilter)
-      if (ageCmp && ageVal) params.set('age', `${ageCmp}${parseInt(ageVal, 10)}`)
+      if (ageMax != null) {
+        params.set('age', `0-${ageMax}`)
+      }
 
       const res = await fetch(`/api/rows?${params.toString()}`)
       const json = await res.json()
@@ -77,7 +76,7 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [page, limit, nameFilter, sexFilter, ageCmp, ageVal])
+  }, [page, limit, nameFilter, ageMax])
 
   useEffect(() => {
     fetchData()
@@ -159,7 +158,6 @@ export default function Home() {
           <CardContent className="py-0">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <label className="text-sm text-muted-foreground">View</label>
                 <div className="inline-flex items-center gap-1">
                   <Button variant={view === 'list' ? 'default' : 'outline'} size="sm" onClick={() => setView('list')}>List</Button>
                   <Button variant={view === 'gallery' ? 'default' : 'outline'} size="sm" onClick={() => setView('gallery')}>Gallery</Button>
@@ -185,32 +183,30 @@ export default function Home() {
           <CardContent className="py-0">
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Name</span>
                 <Input className="w-56" value={nameFilter} onChange={(e) => { setNameFilter(e.target.value); setPage(1) }} placeholder="Filter by name" />
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Sex</span>
-                <select className="h-9 rounded-md border bg-background px-2 text-sm" value={sexFilter} onChange={(e) => { setSexFilter(e.target.value as any); setPage(1) }}>
-                  <option value="all">All</option>
-                  <option value="m">m</option>
-                  <option value="f">f</option>
-                </select>
-              </div>
+              
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Age</span>
-                <select className="h-9 rounded-md border bg-background px-2 text-sm" value={ageCmp} onChange={(e) => { setAgeCmp(e.target.value as any); setPage(1) }}>
-                  <option value="">Any</option>
-                  <option value=">">&gt;</option>
-                  <option value=">=">&gt;=</option>
-                  <option value="=">=</option>
-                  <option value="<=">&lt;=</option>
-                  <option value="<">&lt;</option>
-                </select>
-                <Input type="number" placeholder="Value" value={ageVal} onChange={(e) => { setAgeVal(e.target.value); setPage(1) }} className="w-24" />
+                <div className="flex items-center gap-2">
+                  <input
+                    type="range"
+                    min={0}
+                    max={120}
+                    step={1}
+                    value={ageMax ?? 120}
+                    onChange={(e) => {
+                      const v = e.target.valueAsNumber
+                      const clamped = Math.max(0, Math.min(120, v))
+                      setAgeMax(clamped)
+                      setPage(1)
+                    }}
+                    aria-label="Maximum age"
+                  />
+                  <span className="text-muted-foreground text-xs">0 - {(ageMax ?? 120).toString()}</span>
+                </div>
               </div>
-              <div className="ml-auto">
-                <Button variant="outline" size="sm" onClick={() => { setNameFilter(''); setSexFilter('all'); setAgeCmp(''); setAgeVal(''); setPage(1) }}>Reset</Button>
-              </div>
+              
             </div>
           </CardContent>
         </Card>
