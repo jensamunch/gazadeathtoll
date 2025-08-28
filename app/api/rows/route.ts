@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/src/lib/prisma'
+import type { Row, Prisma, Sex } from '@prisma/client'
 
 export const runtime = 'nodejs'
 
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
     console.log('API: Raw filter parameters:', { ageFilter, sexFilter, nameFilter })
     
     // Build where clause for filtering
-    const where: Record<string, unknown> = {}
+    const where: Prisma.PersonWhereInput = {}
     
     if (ageFilter) {
       console.log('Processing age filter:', ageFilter)
@@ -50,7 +51,9 @@ export async function GET(request: Request) {
     }
     
     if (sexFilter) {
-      where.sex = sexFilter
+      if (sexFilter === 'm' || sexFilter === 'f') {
+        where.sex = sexFilter as Sex
+      }
     }
     
     if (nameFilter) {
@@ -93,7 +96,7 @@ export async function GET(request: Request) {
       skip: offset
     })
     console.log('API: Found generic rows:', rows.length)
-    return NextResponse.json(rows.map((r) => r.data))
+    return NextResponse.json(rows.map((r: Row) => r.data))
   } catch (err) {
     console.error('API Error:', err)
     return NextResponse.json([])
@@ -102,7 +105,7 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const body = await request.json()
+    const body = (await request.json()) as { id: string } & Prisma.PersonUpdateInput
     const { id, ...data } = body || {}
     if (!id) {
       return NextResponse.json({ error: 'Missing id' }, { status: 400 })

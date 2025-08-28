@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState, useCallback, useMemo } from 'react'
+import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
@@ -109,13 +110,13 @@ export default function Home() {
     []
   )
 
-  const squareImageUrlForId = useCallback((id: string, _size: number = 600): string => {
+  const squareImageUrlForId = useCallback((id: string, size: number = 600): string => {
     // Map id to deterministic index
     let hash = 0
     for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0
     const idx = Math.abs(hash) % seedImageNames.length
     const name = seedImageNames[idx]
-    return `/api/seed/${name}`
+    return `/api/seed/${name}?s=${size}`
   }, [seedImageNames])
 
   // Deterministic date of death between Oct 7, 2023 and now
@@ -256,9 +257,11 @@ export default function Home() {
                   <TableCell>
                     <div className="flex items-center">
                       {hasImageForId(p.id) ? (
-                        <img
+                        <Image
                           src={squareImageUrlForId(p.id, 80)}
                           alt={p.name || p.enName || p.id}
+                          width={32}
+                          height={32}
                           className="size-8 rounded-md object-cover"
                         />
                       ) : (
@@ -283,9 +286,11 @@ export default function Home() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {galleryData.map((p) => (
                 <div key={p.id} className="rounded-md border overflow-hidden">
-                  <img
+                  <Image
                     src={squareImageUrlForId(p.id, 600)}
                     alt={p.name || p.enName || p.id}
+                    width={600}
+                    height={600}
                     className="w-full aspect-square object-cover"
                   />
                   <div className="p-2">
@@ -331,9 +336,6 @@ export default function Home() {
         <Slideshow
           data={galleryData}
           squareImageUrlForId={squareImageUrlForId}
-          dodForId={dodForId}
-          categoryForId={categoryForId}
-          formatDateOnly={formatDateOnly}
           onClose={() => setShowSlideshow(false)}
         />
       )}
@@ -365,7 +367,7 @@ function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imag
       <div className="flex items-start gap-4">
         <div className="w-28">
           {imageUrl ? (
-            <img src={imageUrl} alt={person.name || person.enName || person.id} className="w-28 aspect-square rounded-md object-cover" />
+            <Image src={imageUrl} alt={person.name || person.enName || person.id} width={112} height={112} className="w-28 aspect-square rounded-md object-cover" />
           ) : (
             <div className="w-28 aspect-square flex items-center justify-center bg-muted rounded-md">
               <Button asChild variant="outline" size="sm"><a href="/admin">Upload</a></Button>

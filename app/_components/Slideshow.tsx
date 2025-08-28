@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { X, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 
@@ -17,18 +18,12 @@ type Person = {
 interface SlideshowProps {
   data: Person[]
   squareImageUrlForId: (id: string, size?: number) => string
-  dodForId: (id: string) => string
-  categoryForId: (id: string) => string
-  formatDateOnly: (value: unknown) => string
   onClose: () => void
 }
 
 export default function Slideshow({ 
   data, 
   squareImageUrlForId, 
-  dodForId, 
-  categoryForId, 
-  formatDateOnly, 
   onClose
 }: SlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -122,9 +117,11 @@ export default function Slideshow({
       {/* Main image */}
       <div className="w-full h-full flex items-center justify-center p-8">
         <div className="max-w-4xl max-h-full flex flex-col items-center">
-          <img
+          <Image
             src={squareImageUrlForId(currentPerson.id, 800)}
             alt={currentPerson.name || currentPerson.enName || currentPerson.id}
+            width={800}
+            height={800}
             className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
           />
           
