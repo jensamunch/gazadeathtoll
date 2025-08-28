@@ -19,6 +19,8 @@ Aug. 28
 - AI agents kept making their own i18n and not using next-intl
 - removing both to make it simpler to try things
 
+WHY NOT DEPLOY
+
 QUESTIONS FOR FURTHER DEVELOPMENT
 - multiple photos? who decides?
 - false information?
