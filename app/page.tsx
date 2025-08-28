@@ -3,8 +3,15 @@ import { useEffect, useState, useCallback, useMemo } from 'react'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table'
+// import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import Slideshow from './_components/Slideshow'
 
@@ -35,6 +42,7 @@ export default function Home() {
   // Filters
   const [nameFilter, setNameFilter] = useState('')
   const [ageMax, setAgeMax] = useState<number | null>(null)
+  const [categoryFilter, setCategoryFilter] = useState<string>('')
 
   useEffect(() => {
     setMounted(true)
@@ -64,6 +72,7 @@ export default function Home() {
       if (ageMax != null) {
         params.set('age', `0-${ageMax}`)
       }
+      if (categoryFilter) params.set('category', categoryFilter)
 
       const res = await fetch(`/api/rows?${params.toString()}`)
       const json = await res.json()
@@ -77,13 +86,16 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [page, limit, nameFilter, ageMax])
+  }, [page, limit, nameFilter, ageMax, categoryFilter])
 
   useEffect(() => {
     fetchData()
   }, [fetchData])
 
-  const totalPages = useMemo(() => (total > 0 ? Math.max(1, Math.ceil(total / limit)) : 1), [total, limit])
+  const totalPages = useMemo(
+    () => (total > 0 ? Math.max(1, Math.ceil(total / limit)) : 1),
+    [total, limit]
+  )
 
   // Pseudo-random but stable image assignment per row id
   const hasImageForId = useCallback((id: string): boolean => {
@@ -94,30 +106,11 @@ export default function Home() {
     return (hash & 1) === 0
   }, [])
 
-  // Deterministic square image URL for gallery using picsum seed
-  const seedImageNames = useMemo(
-    () => [
-      'slice_final_1_1.png',
-      'slice_final_1_2.png',
-      'slice_final_1_3.png',
-      'slice_final_2_1.png',
-      'slice_final_2_2.png',
-      'slice_final_2_3.png',
-      'slice_final_3_1.png',
-      'slice_final_3_2.png',
-      'slice_final_3_3.png',
-    ],
-    []
-  )
-
-  const squareImageUrlForId = useCallback((id: string, size: number = 600): string => {
-    // Map id to deterministic index
-    let hash = 0
-    for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0
-    const idx = Math.abs(hash) % seedImageNames.length
-    const name = seedImageNames[idx]
-    return `/api/seed/${name}?s=${size}`
-  }, [seedImageNames])
+  // Placeholder image only; no per-id mapping now
+  // (kept for potential future expansion)
+  const squareImageUrlForId = useCallback((): string => {
+    return `/placeholder-male-square.png`
+  }, [])
 
   // Deterministic date of death between Oct 7, 2023 and now
   const dodForId = useCallback((id: string): string => {
@@ -139,82 +132,104 @@ export default function Home() {
     return categories[idx]
   }, [])
 
-  const galleryData = useMemo(() => data.filter((p) => hasImageForId(p.id)), [data, hasImageForId])
+  const filteredData = useMemo(() => data, [data])
+
+  const galleryData = useMemo(() => filteredData, [filteredData])
 
   if (!mounted) {
     return (
       <main className="p-6">
-        <div className="py-24 flex items-center justify-center">Loading...</div>
+        <div className="flex items-center justify-center py-24">Loading...</div>
       </main>
     )
   }
 
   return (
     <main className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pb-2">
-        <Card className="py-3 gap-3">
-          <CardHeader className="py-2">
-            <CardTitle>Display</CardTitle>
-          </CardHeader>
-          <CardContent className="py-0">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-1">
-                  <Button variant={view === 'list' ? 'default' : 'outline'} size="sm" onClick={() => setView('list')}>List</Button>
-                  <Button variant={view === 'gallery' ? 'default' : 'outline'} size="sm" onClick={() => setView('gallery')}>Gallery</Button>
-                  <Button variant="outline" size="sm" onClick={() => setShowSlideshow(true)} disabled={galleryData.length === 0}>Slideshow</Button>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <label className="text-sm text-muted-foreground">Rows</label>
-                <select className="h-9 rounded-md border bg-background px-2 text-sm" value={limit} onChange={(e) => { setLimit(parseInt(e.target.value, 10)); setPage(1) }}>
-                  <option value={25}>25</option>
-                  <option value={50}>50</option>
-                  <option value={100}>100</option>
-                  <option value={200}>200</option>
-                </select>
+      <div className="flex w-full flex-wrap lg:flex-nowrap">
+        <div className="flex items-center">
+          <div className="inline-flex items-center gap-1">
+            <Button
+              variant={view === 'list' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('list')}
+            >
+              List
+            </Button>
+            <Button
+              variant={view === 'gallery' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('gallery')}
+            >
+              Gallery
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowSlideshow(true)}
+              disabled={galleryData.length === 0}
+            >
+              Slideshow
+            </Button>
+          </div>
+        </div>
+        <div className="lg:ml-auto mt-2 lg:mt-0 flex items-center">
+          <div className="inline-flex items-center">
+            <div className="flex w-full items-center mr-2 lg:mr-8">
+              <Input
+                className="w-full md:w-56"
+                value={nameFilter}
+                onChange={(e) => {
+                  setNameFilter(e.target.value)
+                  setPage(1)
+                }}
+                placeholder="Filter by name"
+              />
+            </div>
+            <div className="flex w-full items-center mr-2 lg:mr-8">
+              <span className="text-muted-foreground text-sm">Age</span>
+              <div className="flex w-full items-center gap-2 md:w-auto">
+                <input
+                  type="range"
+                  min={0}
+                  max={120}
+                  step={1}
+                  value={ageMax ?? 120}
+                  className="w-full md:w-48"
+                  onChange={(e) => {
+                    const v = e.target.valueAsNumber
+                    const clamped = Math.max(0, Math.min(120, v))
+                    setAgeMax(clamped)
+                    setPage(1)
+                  }}
+                  aria-label="Maximum age"
+                />
+      
               </div>
             </div>
-          </CardContent>
-        </Card>
-        <Card className="md:col-span-2 py-3 gap-3">
-          <CardHeader className="py-2">
-            <CardTitle>Filters</CardTitle>
-          </CardHeader>
-          <CardContent className="py-0">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2">
-                <Input className="w-56" value={nameFilter} onChange={(e) => { setNameFilter(e.target.value); setPage(1) }} placeholder="Filter by name" />
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Age</span>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="range"
-                    min={0}
-                    max={120}
-                    step={1}
-                    value={ageMax ?? 120}
-                    onChange={(e) => {
-                      const v = e.target.valueAsNumber
-                      const clamped = Math.max(0, Math.min(120, v))
-                      setAgeMax(clamped)
-                      setPage(1)
-                    }}
-                    aria-label="Maximum age"
-                  />
-                  <span className="text-muted-foreground text-xs">0 - {(ageMax ?? 120).toString()}</span>
-                </div>
-              </div>
-              
+            <div className="flex w-full items-center">
+              <span className="text-muted-foreground text-sm">Category</span>
+              <select
+                className="bg-background h-9 w-full rounded-md border px-2 text-sm md:w-[180px]"
+                value={categoryFilter}
+                onChange={(e) => {
+                  setCategoryFilter(e.target.value)
+                  setPage(1)
+                }}
+              >
+                <option value="">All</option>
+                <option value="civilian">civilian</option>
+                <option value="medical staff">medical staff</option>
+                <option value="journalist">journalist</option>
+                <option value="child">child</option>
+              </select>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
-      <div className="my-2 text-sm text-muted-foreground">
-        Loaded {data.length.toLocaleString()} | Total matching {total.toLocaleString()}
+      <div className="text-muted-foreground my-2 text-sm">
+        Loaded {filteredData.length.toLocaleString()} | Total matching {total.toLocaleString()}
       </div>
 
       {view === 'list' ? (
@@ -226,24 +241,28 @@ export default function Home() {
               <TableHead>English name</TableHead>
               <TableHead>Age</TableHead>
               <TableHead>Date of birth</TableHead>
-              <TableHead>Date of death</TableHead>
+              <TableHead className="text-red-600" title="mock data">Date of death</TableHead>
               <TableHead>Sex</TableHead>
-              <TableHead>Category</TableHead>
+              <TableHead className="text-red-600" title="mock data">Category</TableHead>
               <TableHead>Source</TableHead>
-              <TableHead>Image</TableHead>
+              <TableHead className="text-red-600" title="mock data">Image</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={9} className="py-10 text-center">Loading...</TableCell>
+                <TableCell colSpan={9} className="py-10 text-center">
+                  Loading...
+                </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="py-10 text-center">No results</TableCell>
+                <TableCell colSpan={9} className="py-10 text-center">
+                  No results
+                </TableCell>
               </TableRow>
             ) : (
-              data.map((p) => (
+              filteredData.map((p) => (
                 <TableRow key={p.id} className="cursor-pointer" onClick={() => setEditing(p)}>
                   <TableCell className="font-mono text-xs">{p.id}</TableCell>
                   <TableCell>{p.name}</TableCell>
@@ -253,12 +272,14 @@ export default function Home() {
                   <TableCell>{dodForId(p.id)}</TableCell>
                   <TableCell className="uppercase">{p.sex ?? ''}</TableCell>
                   <TableCell className="capitalize">{categoryForId(p.id)}</TableCell>
-                  <TableCell className="truncate max-w-[20ch]" title={p.source ?? undefined}>{p.source ?? ''}</TableCell>
+                  <TableCell className="max-w-[20ch] truncate" title={p.source ?? undefined}>
+                    {p.source ?? ''}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       {hasImageForId(p.id) ? (
                         <Image
-                          src={squareImageUrlForId(p.id, 80)}
+                          src={squareImageUrlForId()}
                           alt={p.name || p.enName || p.id}
                           width={32}
                           height={32}
@@ -283,21 +304,30 @@ export default function Home() {
           ) : galleryData.length === 0 ? (
             <div className="py-10 text-center">No images found</div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {galleryData.map((p) => (
-                <div key={p.id} className="rounded-md border overflow-hidden">
+                <div key={p.id} className="overflow-hidden rounded-md border">
                   <Image
-                    src={squareImageUrlForId(p.id, 600)}
+                    src={squareImageUrlForId()}
                     alt={p.name || p.enName || p.id}
                     width={600}
                     height={600}
-                    className="w-full aspect-square object-cover"
+                    className="aspect-square w-full object-cover"
                   />
                   <div className="p-2">
-                    <div className="font-medium truncate" title={p.name}>{p.name}</div>
-                    <div className="text-muted-foreground text-xs truncate" title={p.enName}>{p.enName}</div>
-                    <div className="text-muted-foreground text-xs">{p.age ?? ''} {p.sex ? `• ${String(p.sex).toUpperCase()}` : ''} • {categoryForId(p.id)}</div>
-                    <div className="text-muted-foreground text-xs">Date of birth {formatDateOnly(p.dob)} • Date of death {dodForId(p.id)}</div>
+                    <div className="truncate font-medium" title={p.name}>
+                      {p.name}
+                    </div>
+                    <div className="text-muted-foreground truncate text-xs" title={p.enName}>
+                      {p.enName}
+                    </div>
+                    <div className="text-muted-foreground text-xs">
+                      {p.age ?? ''} {p.sex ? `• ${String(p.sex).toUpperCase()}` : ''} •{' '}
+                      {categoryForId(p.id)}
+                    </div>
+                    <div className="text-muted-foreground text-xs">
+                      Date of birth {formatDateOnly(p.dob)} • Date of death {dodForId(p.id)}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -307,26 +337,73 @@ export default function Home() {
       )}
 
       <div className="mt-4 flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">Page {page} of {totalPages}</div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setPage(1)} disabled={page <= 1}>{'<<'}</Button>
-          <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>{'<'}</Button>
-          <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page >= totalPages}>{'>'}</Button>
-          <Button variant="outline" size="sm" onClick={() => setPage(totalPages)} disabled={page >= totalPages}>{'>>'}</Button>
+        <div className="text-muted-foreground text-sm">
+          Page {page} of {totalPages}
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <label className="text-muted-foreground text-sm">Rows</label>
+            <select
+              className="bg-background h-9 rounded-md border px-2 text-sm"
+              value={limit}
+              onChange={(e) => {
+                setLimit(parseInt(e.target.value, 10))
+                setPage(1)
+              }}
+            >
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+            </select>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => setPage(1)} disabled={page <= 1}>
+            {'<<'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page <= 1}
+          >
+            {'<'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page >= totalPages}
+          >
+            {'>'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setPage(totalPages)}
+            disabled={page >= totalPages}
+          >
+            {'>>'}
+          </Button>
         </div>
       </div>
 
-      <Dialog open={!!editing} onOpenChange={(o) => { if (!o) setEditing(null) }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Propose edit</DialogTitle>
-          </DialogHeader>
+      <Dialog
+        open={!!editing}
+        onOpenChange={(o) => {
+          if (!o) setEditing(null)
+        }}
+      >
+        <DialogContent className="sm:max-w-[900px] md:max-w-[1100px] lg:max-w-[1200px] p-8 rounded-2xl shadow-xl">
+
           {editing && (
             <EditForm
               person={editing}
-              imageUrl={hasImageForId(editing.id) ? squareImageUrlForId(editing.id, 600) : null}
+              imageUrl={hasImageForId(editing.id) ? squareImageUrlForId() : null}
               onClose={() => setEditing(null)}
-              onSaved={() => { setEditing(null); fetchData() }}
+              onSaved={() => {
+                setEditing(null)
+                fetchData()
+              }}
             />
           )}
         </DialogContent>
@@ -343,16 +420,31 @@ export default function Home() {
   )
 }
 
-function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imageUrl?: string | null; onClose: () => void; onSaved: () => void }) {
+function EditForm({
+  person,
+  imageUrl,
+  onClose,
+  onSaved,
+}: {
+  person: Person
+  imageUrl?: string | null
+  onClose: () => void
+  onSaved: () => void
+}) {
   const [form, setForm] = useState<Person>(person)
   const [saving, setSaving] = useState(false)
 
-  const updateField = <K extends keyof Person>(key: K, value: Person[K]) => setForm((f) => ({ ...f, [key]: value }))
+  const updateField = <K extends keyof Person>(key: K, value: Person[K]) =>
+    setForm((f) => ({ ...f, [key]: value }))
 
   const save = async () => {
     setSaving(true)
     try {
-      const res = await fetch('/api/rows', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
+      const res = await fetch('/api/rows', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
       const j = await res.json()
       if (!res.ok || !j.ok) throw new Error(j.error || 'Failed to save')
       onSaved()
@@ -363,51 +455,80 @@ function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imag
   }
 
   return (
-    <div className="grid gap-3">
-      <div className="flex items-start gap-4">
-        <div className="w-28">
+    <div className="grid gap-6">
+      <div className="flex items-start gap-6">
+        <div className="w-36">
           {imageUrl ? (
-            <Image src={imageUrl} alt={person.name || person.enName || person.id} width={112} height={112} className="w-28 aspect-square rounded-md object-cover" />
+            <Image
+              src={imageUrl}
+              alt={person.name || person.enName || person.id}
+              width={144}
+              height={144}
+              className="aspect-square w-36 rounded-xl border object-cover shadow-sm"
+            />
           ) : (
-            <div className="w-28 aspect-square flex items-center justify-center bg-muted rounded-md">
-              <Button asChild variant="outline" size="sm"><a href="/admin">Upload</a></Button>
+            <div className="bg-muted/60 flex aspect-square w-36 items-center justify-center rounded-xl border">
+              <Button asChild variant="outline" size="sm">
+                <a href="/admin">Upload</a>
+              </Button>
             </div>
           )}
         </div>
-        <div className="flex-1 grid grid-cols-2 gap-3">
-          <div>
-            <label className="text-sm text-muted-foreground">Name</label>
-            <Input value={form.name} onChange={(e) => updateField('name', e.target.value)} />
+        <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">Name</label>
+            <Input value={form.name} onChange={(e) => updateField('name', e.target.value)} className="h-11" />
           </div>
-          <div>
-            <label className="text-sm text-muted-foreground">English name</label>
-            <Input value={form.enName} onChange={(e) => updateField('enName', e.target.value)} />
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">English name</label>
+            <Input value={form.enName} onChange={(e) => updateField('enName', e.target.value)} className="h-11" />
           </div>
-          <div>
-            <label className="text-sm text-muted-foreground">Age</label>
-            <Input type="number" value={form.age ?? ''} onChange={(e) => updateField('age', e.target.value ? parseInt(e.target.value, 10) : null)} />
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">Age</label>
+            <Input
+              type="number"
+              value={form.age ?? ''}
+              onChange={(e) =>
+                updateField('age', e.target.value ? parseInt(e.target.value, 10) : null)
+              }
+              className="h-11"
+            />
           </div>
-          <div>
-            <label className="text-sm text-muted-foreground">Date of birth</label>
-            <Input value={form.dob ? String(form.dob).slice(0, 10) : ''} onChange={(e) => updateField('dob', e.target.value ? new Date(e.target.value).toISOString() : null)} />
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">Date of birth</label>
+            <Input
+              value={form.dob ? String(form.dob).slice(0, 10) : ''}
+              onChange={(e) =>
+                updateField('dob', e.target.value ? new Date(e.target.value).toISOString() : null)
+              }
+              className="h-11"
+            />
           </div>
-          <div>
-            <label className="text-sm text-muted-foreground">Sex</label>
-            <select className="h-9 rounded-md border bg-background px-2 text-sm w-full" value={form.sex ?? ''} onChange={(e) => updateField('sex', (e.target.value as 'm' | 'f') || null)}>
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">Sex</label>
+            <select
+              className="bg-background h-11 w-full rounded-md border px-3 text-sm"
+              value={form.sex ?? ''}
+              onChange={(e) => updateField('sex', (e.target.value as 'm' | 'f') || null)}
+            >
               <option value="">Unknown</option>
               <option value="m">m</option>
               <option value="f">f</option>
             </select>
           </div>
-          <div>
-            <label className="text-sm text-muted-foreground">Source</label>
-            <Input value={form.source ?? ''} onChange={(e) => updateField('source', e.target.value)} />
+          <div className="space-y-2">
+            <label className="text-muted-foreground text-sm">Source</label>
+            <Input value={form.source ?? ''} onChange={(e) => updateField('source', e.target.value)} className="h-11" />
           </div>
         </div>
       </div>
-      <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={onClose} disabled={saving}>Cancel</Button>
-        <Button onClick={save} disabled={saving}>{saving ? 'Proposing...' : 'Propose edit'}</Button>
+      <div className="mt-2 flex justify-end gap-3">
+        <Button variant="outline" onClick={onClose} disabled={saving} className="h-11 px-6">
+          Cancel
+        </Button>
+        <Button onClick={save} disabled={saving} className="h-11 px-6">
+          {saving ? 'Proposing...' : 'Propose edit'}
+        </Button>
       </div>
     </div>
   )

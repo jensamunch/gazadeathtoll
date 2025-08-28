@@ -21,11 +21,7 @@ interface SlideshowProps {
   onClose: () => void
 }
 
-export default function Slideshow({ 
-  data, 
-  squareImageUrlForId, 
-  onClose
-}: SlideshowProps) {
+export default function Slideshow({ data, squareImageUrlForId, onClose }: SlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
 
@@ -40,7 +36,7 @@ export default function Slideshow({
   // Auto-advance slideshow every 3 seconds
   useEffect(() => {
     if (!isPlaying) return
-    
+
     const interval = setInterval(nextSlide, 3000)
     return () => clearInterval(interval)
   }, [nextSlide, isPlaying])
@@ -74,15 +70,15 @@ export default function Slideshow({
   const currentPerson = data[currentIndex]
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
       {/* Close button */}
       <Button
         variant="outline"
         size="sm"
         onClick={onClose}
-        className="absolute top-4 right-4 z-10 bg-black/50 border-white/20 text-white hover:bg-black/70"
+        className="absolute top-4 right-4 z-10 border-white/20 bg-black/50 text-white hover:bg-black/70"
       >
-        <X className="w-4 h-4" />
+        <X className="h-4 w-4" />
       </Button>
 
       {/* Play/Pause button */}
@@ -90,9 +86,9 @@ export default function Slideshow({
         variant="outline"
         size="sm"
         onClick={() => setIsPlaying(!isPlaying)}
-        className="absolute top-4 left-4 z-10 bg-black/50 border-white/20 text-white hover:bg-black/70"
+        className="absolute top-4 left-4 z-10 border-white/20 bg-black/50 text-white hover:bg-black/70"
       >
-        {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+        {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
       </Button>
 
       {/* Navigation arrows */}
@@ -100,43 +96,45 @@ export default function Slideshow({
         variant="outline"
         size="sm"
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 border-white/20 text-white hover:bg-black/70"
+        className="absolute top-1/2 left-4 z-10 -translate-y-1/2 border-white/20 bg-black/50 text-white hover:bg-black/70"
       >
-        <ChevronLeft className="w-4 h-4" />
+        <ChevronLeft className="h-4 w-4" />
       </Button>
 
       <Button
         variant="outline"
         size="sm"
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/50 border-white/20 text-white hover:bg-black/70"
+        className="absolute top-1/2 right-4 z-10 -translate-y-1/2 border-white/20 bg-black/50 text-white hover:bg-black/70"
       >
-        <ChevronRight className="w-4 h-4" />
+        <ChevronRight className="h-4 w-4" />
       </Button>
 
       {/* Main image */}
-      <div className="w-full h-full flex items-center justify-center p-8">
-        <div className="max-w-4xl max-h-full flex flex-col items-center">
+      <div className="flex h-full w-full items-center justify-center p-8">
+        <div className="flex max-h-full max-w-4xl flex-col items-center">
           <Image
             src={squareImageUrlForId(currentPerson.id, 800)}
             alt={currentPerson.name || currentPerson.enName || currentPerson.id}
             width={800}
             height={800}
-            className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl"
+            className="max-h-[70vh] max-w-full rounded-lg object-contain shadow-2xl"
           />
-          
+
           {/* Person info overlay - only Arabic name */}
-          <div className="mt-6 text-center text-white bg-black/50 rounded-lg p-4 max-w-lg">
+          <div className="mt-6 max-w-lg rounded-lg bg-black/50 p-4 text-center text-white">
             <h2 className="text-xl font-semibold">{currentPerson.name}</h2>
           </div>
         </div>
       </div>
 
       {/* Progress indicator */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center space-x-2 text-white text-sm bg-black/50 rounded-full px-4 py-2">
-        <span>{currentIndex + 1} / {data.length}</span>
-        <div className="w-32 h-1 bg-white/20 rounded-full overflow-hidden">
-          <div 
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center space-x-2 rounded-full bg-black/50 px-4 py-2 text-sm text-white">
+        <span>
+          {currentIndex + 1} / {data.length}
+        </span>
+        <div className="h-1 w-32 overflow-hidden rounded-full bg-white/20">
+          <div
             className="h-full bg-white transition-all duration-100 ease-linear"
             style={{ width: `${((currentIndex + 1) / data.length) * 100}%` }}
           />

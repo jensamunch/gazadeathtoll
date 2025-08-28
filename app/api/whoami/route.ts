@@ -5,5 +5,3 @@ export const runtime = 'nodejs'
 export async function GET() {
   return NextResponse.json({ clerkConfigured: false, userId: null, admin: false })
 }
-
-

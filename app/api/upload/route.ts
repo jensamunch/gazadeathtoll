@@ -37,7 +37,9 @@ export async function POST(request: Request) {
     const records = parse(text, { columns: true, skip_empty_lines: true }) as PersonRecord[]
 
     // Try to detect if this matches the Person schema; if so, load typed
-    const looksLikePerson = ['id','name','en_name','age','dob','sex','source'].every((k) => k in (records[0] || {}))
+    const looksLikePerson = ['id', 'name', 'en_name', 'age', 'dob', 'sex', 'source'].every(
+      (k) => k in (records[0] || {})
+    )
 
     const hasPersonModel = 'person' in prisma
 
@@ -49,7 +51,7 @@ export async function POST(request: Request) {
       const typed: PersonData[] = records.map((r) => {
         const age = r.age ? Number(r.age) : null
         const dob = r.dob ? new Date(r.dob) : null
-        const sex = r.sex === 'm' || r.sex === 'f' ? r.sex as 'm' | 'f' : null
+        const sex = r.sex === 'm' || r.sex === 'f' ? (r.sex as 'm' | 'f') : null
         return {
           id: String(r.id),
           name: r.name,

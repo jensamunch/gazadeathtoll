@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/src/lib/prisma'
-import type { Row, Prisma, Sex } from '@prisma/client'
+import type { Row, Prisma, Sex, Person } from '@prisma/client'
 
 export const runtime = 'nodejs'
 
@@ -11,24 +11,25 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '1000')
     const offset = (page - 1) * limit
-    
+
     // Get filter parameters
     const ageFilter = searchParams.get('age')
     const sexFilter = searchParams.get('sex')
     const nameFilter = searchParams.get('name')
-    
-    console.log('API: Raw filter parameters:', { ageFilter, sexFilter, nameFilter })
-    
+    const category = searchParams.get('category')
+
+    console.log('API: Raw filter parameters:', { ageFilter, sexFilter, nameFilter, category })
+
     // Build where clause for filtering
     const where: Prisma.PersonWhereInput = {}
-    
+
     if (ageFilter) {
       console.log('Processing age filter:', ageFilter)
       if (ageFilter.includes('-')) {
         const [min, max] = ageFilter.split('-').map(Number)
         where.age = {
           gte: min,
-          lte: max
+          lte: max,
         }
       } else if (ageFilter.includes('>')) {
         const val = parseInt(ageFilter.replace('>', ''))
@@ -49,32 +50,69 @@ export async function GET(request: Request) {
         }
       }
     }
-    
+
     if (sexFilter) {
       if (sexFilter === 'm' || sexFilter === 'f') {
         where.sex = sexFilter as Sex
       }
     }
-    
+
     if (nameFilter) {
       where.OR = [
         { name: { contains: nameFilter, mode: 'insensitive' } },
-        { enName: { contains: nameFilter, mode: 'insensitive' } }
+        { enName: { contains: nameFilter, mode: 'insensitive' } },
       ]
     }
-    
-    console.log('API: Applying filters:', { ageFilter, sexFilter, nameFilter })
+
+    console.log('API: Applying filters:', { ageFilter, sexFilter, nameFilter, category })
     console.log('API: Where clause:', where)
-    
-    const persons = await prisma.person.findMany({ 
+    // Category filter: apply deterministic mapping and paginate accurately
+    if (category) {
+      const categories = ['civilian', 'medical staff', 'journalist', 'child'] as const
+      const categoryForId = (id: string) => {
+        let hash = 0
+        for (let i = 0; i < id.length; i++) hash = (hash * 37 + id.charCodeAt(i)) | 0
+        const idx = Math.abs(hash) % categories.length
+        return categories[idx]
+      }
+
+      const allIds = await prisma.person.findMany({
+        where,
+        select: { id: true },
+        orderBy: { createdAt: 'desc' },
+      })
+      const filteredIds = allIds.map((p) => p.id).filter((id) => categoryForId(id) === category)
+      const totalCount = filteredIds.length
+      const pageIds = filteredIds.slice(offset, offset + limit)
+      let persons: Person[] = []
+      if (pageIds.length > 0) {
+        const found = await prisma.person.findMany({ where: { id: { in: pageIds } } })
+        const map = new Map(found.map((p) => [p.id, p]))
+        persons = pageIds
+          .map((id) => map.get(id))
+          .filter((p): p is Person => Boolean(p))
+      }
+      console.log('API: Found persons:', persons.length)
+      return NextResponse.json({
+        data: persons,
+        pagination: {
+          page,
+          limit,
+          total: totalCount,
+          totalPages: Math.ceil(totalCount / (limit || 1)),
+        },
+      })
+    }
+
+    const persons = await prisma.person.findMany({
       where,
       orderBy: { createdAt: 'desc' },
       take: limit,
-      skip: offset
+      skip: offset,
     })
-    
+
     console.log('API: Found persons:', persons.length)
-    
+
     if (persons.length > 0) {
       const totalCount = await prisma.person.count({ where })
       console.log('API: Returning persons data, total:', totalCount)
@@ -84,16 +122,16 @@ export async function GET(request: Request) {
           page,
           limit,
           total: totalCount,
-          totalPages: Math.ceil(totalCount / limit)
-        }
+          totalPages: Math.ceil(totalCount / limit),
+        },
       })
     }
-    
+
     console.log('API: No persons found, trying generic rows...')
-    const rows = await prisma.row.findMany({ 
+    const rows = await prisma.row.findMany({
       orderBy: { createdAt: 'desc' },
       take: limit,
-      skip: offset
+      skip: offset,
     })
     console.log('API: Found generic rows:', rows.length)
     return NextResponse.json(rows.map((r: Row) => r.data))

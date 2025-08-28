@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 
 export default async function AdminPage() {
   return (
-    <div className="p-6 space-y-4">
+    <div className="space-y-4 p-6">
       <h1 className="text-2xl font-semibold">Admin Upload</h1>
       <form className="space-y-3" action="/api/upload" method="post" encType="multipart/form-data">
         <Input name="file" type="file" accept=".csv" />

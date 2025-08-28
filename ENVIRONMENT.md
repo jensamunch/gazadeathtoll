@@ -15,6 +15,7 @@ ADMIN_CLERK_IDS="user_123,user_456"
 ```
 
 Notes:
+
 - Obtain Clerk keys from your Clerk dashboard. Use test keys locally.
 - `ADMIN_CLERK_IDS` controls who can access `/admin` and `/api/upload`.
 - Ensure your Postgres is reachable by `DATABASE_URL` before running Prisma.

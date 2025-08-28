@@ -2,11 +2,7 @@
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 
-export default function ClientLayout({ 
-  children
-}: { 
-  children: React.ReactNode
-}) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
@@ -18,11 +14,11 @@ export default function ClientLayout({
 function Header() {
   return (
     <header className="w-full border-b" style={{ borderColor: 'var(--border)' }}>
-      <div className="px-6 py-3 flex items-center justify-between">
+      <div className="flex items-center justify-between px-6 py-3">
         <nav className="flex items-center gap-4">
-          <Link href="/" className="font-semibold">Palestinian Deaths</Link>
-          <Link href="/admin" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Admin</Link>
-          <Link href="/whoami" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white" target="_blank">Whoami</Link>
+          <Link href="/" className="font-semibold">
+            Palestinian Deaths
+          </Link>
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />

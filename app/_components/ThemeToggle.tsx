@@ -15,7 +15,10 @@ export default function ThemeToggle() {
   useEffect(() => {
     if (mounted && theme) {
       // Tell AG Grid to switch color schemes per docs
-      document.documentElement.setAttribute('data-ag-theme-mode', theme === 'dark' ? 'dark' : 'light')
+      document.documentElement.setAttribute(
+        'data-ag-theme-mode',
+        theme === 'dark' ? 'dark' : 'light'
+      )
     }
   }, [theme, mounted])
 
@@ -37,5 +40,3 @@ export default function ThemeToggle() {
     </div>
   )
 }
-
-
