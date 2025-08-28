@@ -14,6 +14,10 @@ TO ENABLE GALLERY VIEW
 [x] add date of death and randomise it between oct. 7, 2023 and now
 [x] for the gallery show only rows with images
 
+Aug. 28
+- clerk + i18n lots of issues
+- AI agents kept making their own i18n and not using next-intl
+- removing both to make it simpler to try things
 
 QUESTIONS FOR FURTHER DEVELOPMENT
 - multiple photos? who decides?

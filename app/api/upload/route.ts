@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/src/lib/prisma'
 import { parse } from 'csv-parse/sync'
 
@@ -28,19 +27,7 @@ type PersonData = {
 
 export async function POST(request: Request) {
   try {
-    const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
-    const secretKey = process.env.CLERK_SECRET_KEY || ''
-    const clerkConfigured = publishableKey && secretKey && !publishableKey.includes('placeholder')
-
-    if (!clerkConfigured) {
-      return NextResponse.json({ error: 'Auth not configured' }, { status: 503 })
-    }
-
-    const { userId } = await auth()
-    const adminIds = (process.env.ADMIN_CLERK_IDS || '').split(',').map((s) => s.trim()).filter(Boolean)
-    if (!userId || !adminIds.includes(userId)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    // Public endpoint: no authentication required
 
     const formData = await request.formData()
     const file = formData.get('file') as File | null

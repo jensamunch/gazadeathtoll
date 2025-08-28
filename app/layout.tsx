@@ -9,9 +9,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  const clerkConfigured = !!publishableKey && !publishableKey.includes('placeholder')
-  
   return (
     <html suppressHydrationWarning>
       <head>
@@ -28,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           enableSystem
           disableTransitionOnChange
         >
-          <ClientLayout clerkConfigured={clerkConfigured} publishableKey={publishableKey}>
+          <ClientLayout>
             {children}
           </ClientLayout>
         </ThemeProvider>
