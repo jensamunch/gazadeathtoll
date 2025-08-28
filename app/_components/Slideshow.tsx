@@ -21,7 +21,6 @@ interface SlideshowProps {
   categoryForId: (id: string) => string
   formatDateOnly: (value: unknown) => string
   onClose: () => void
-  translations: any
 }
 
 export default function Slideshow({ 
@@ -30,8 +29,7 @@ export default function Slideshow({
   dodForId, 
   categoryForId, 
   formatDateOnly, 
-  onClose,
-  translations: t 
+  onClose
 }: SlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)

@@ -18,44 +18,7 @@ type Person = {
   createdAt: string
 }
 
-// English labels (hardcoded)
-const t = {
-  display: 'Display',
-  filters: 'Filters',
-  view: 'View',
-  rows: 'Rows',
-  name: 'Name',
-  sex: 'Sex',
-  age: 'Age',
-  list: 'List',
-  gallery: 'Gallery',
-  slideshow: 'Slideshow',
-  all: 'All',
-  any: 'Any',
-  reset: 'Reset',
-  filterByName: 'Filter by name',
-  value: 'Value',
-  loaded: 'Loaded',
-  totalMatching: 'Total matching',
-  id: 'ID',
-  englishName: 'English name',
-  dateOfBirth: 'Date of birth',
-  deathOfDeath: 'Date of death',
-  category: 'Category',
-  source: 'Source',
-  image: 'Image',
-  loading: 'Loading...',
-  noResults: 'No results',
-  upload: 'Upload',
-  noImagesFound: 'No images found',
-  page: 'Page',
-  of: 'of',
-  proposeEdit: 'Propose edit',
-  cancel: 'Cancel',
-  proposing: 'Proposing...',
-  proposeEditButton: 'Propose edit',
-  unknown: 'Unknown'
-}
+// Labels inlined in JSX; no translation object.
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
@@ -181,7 +144,7 @@ export default function Home() {
   if (!mounted) {
     return (
       <main className="p-6">
-        <div className="py-24 flex items-center justify-center">{t.loading}</div>
+        <div className="py-24 flex items-center justify-center">Loading...</div>
       </main>
     )
   }
@@ -191,20 +154,20 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pb-2">
         <Card className="py-3 gap-3">
           <CardHeader className="py-2">
-            <CardTitle>{t.display}</CardTitle>
+            <CardTitle>Display</CardTitle>
           </CardHeader>
           <CardContent className="py-0">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <label className="text-sm text-muted-foreground">{t.view}</label>
+                <label className="text-sm text-muted-foreground">View</label>
                 <div className="inline-flex items-center gap-1">
-                  <Button variant={view === 'list' ? 'default' : 'outline'} size="sm" onClick={() => setView('list')}>{t.list}</Button>
-                  <Button variant={view === 'gallery' ? 'default' : 'outline'} size="sm" onClick={() => setView('gallery')}>{t.gallery}</Button>
-                  <Button variant="outline" size="sm" onClick={() => setShowSlideshow(true)} disabled={galleryData.length === 0}>{t.slideshow}</Button>
+                  <Button variant={view === 'list' ? 'default' : 'outline'} size="sm" onClick={() => setView('list')}>List</Button>
+                  <Button variant={view === 'gallery' ? 'default' : 'outline'} size="sm" onClick={() => setView('gallery')}>Gallery</Button>
+                  <Button variant="outline" size="sm" onClick={() => setShowSlideshow(true)} disabled={galleryData.length === 0}>Slideshow</Button>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <label className="text-sm text-muted-foreground">{t.rows}</label>
+                <label className="text-sm text-muted-foreground">Rows</label>
                 <select className="h-9 rounded-md border bg-background px-2 text-sm" value={limit} onChange={(e) => { setLimit(parseInt(e.target.value, 10)); setPage(1) }}>
                   <option value={25}>25</option>
                   <option value={50}>50</option>
@@ -217,36 +180,36 @@ export default function Home() {
         </Card>
         <Card className="md:col-span-2 py-3 gap-3">
           <CardHeader className="py-2">
-            <CardTitle>{t.filters}</CardTitle>
+            <CardTitle>Filters</CardTitle>
           </CardHeader>
           <CardContent className="py-0">
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">{t.name}</span>
-                <Input className="w-56" value={nameFilter} onChange={(e) => { setNameFilter(e.target.value); setPage(1) }} placeholder={t.filterByName} />
+                <span className="text-sm text-muted-foreground">Name</span>
+                <Input className="w-56" value={nameFilter} onChange={(e) => { setNameFilter(e.target.value); setPage(1) }} placeholder="Filter by name" />
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">{t.sex}</span>
+                <span className="text-sm text-muted-foreground">Sex</span>
                 <select className="h-9 rounded-md border bg-background px-2 text-sm" value={sexFilter} onChange={(e) => { setSexFilter(e.target.value as any); setPage(1) }}>
-                  <option value="all">{t.all}</option>
+                  <option value="all">All</option>
                   <option value="m">m</option>
                   <option value="f">f</option>
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">{t.age}</span>
+                <span className="text-sm text-muted-foreground">Age</span>
                 <select className="h-9 rounded-md border bg-background px-2 text-sm" value={ageCmp} onChange={(e) => { setAgeCmp(e.target.value as any); setPage(1) }}>
-                  <option value="">{t.any}</option>
+                  <option value="">Any</option>
                   <option value=">">&gt;</option>
                   <option value=">=">&gt;=</option>
                   <option value="=">=</option>
                   <option value="<=">&lt;=</option>
                   <option value="<">&lt;</option>
                 </select>
-                <Input type="number" placeholder={t.value} value={ageVal} onChange={(e) => { setAgeVal(e.target.value); setPage(1) }} className="w-24" />
+                <Input type="number" placeholder="Value" value={ageVal} onChange={(e) => { setAgeVal(e.target.value); setPage(1) }} className="w-24" />
               </div>
               <div className="ml-auto">
-                <Button variant="outline" size="sm" onClick={() => { setNameFilter(''); setSexFilter('all'); setAgeCmp(''); setAgeVal(''); setPage(1) }}>{t.reset}</Button>
+                <Button variant="outline" size="sm" onClick={() => { setNameFilter(''); setSexFilter('all'); setAgeCmp(''); setAgeVal(''); setPage(1) }}>Reset</Button>
               </div>
             </div>
           </CardContent>
@@ -254,33 +217,33 @@ export default function Home() {
       </div>
 
       <div className="my-2 text-sm text-muted-foreground">
-        {t.loaded} {data.length.toLocaleString()} | {t.totalMatching} {total.toLocaleString()}
+        Loaded {data.length.toLocaleString()} | Total matching {total.toLocaleString()}
       </div>
 
       {view === 'list' ? (
         <Table className="min-w-[1200px]">
           <TableHeader>
             <TableRow>
-              <TableHead>{t.id}</TableHead>
-              <TableHead>{t.name}</TableHead>
-              <TableHead>{t.englishName}</TableHead>
-              <TableHead>{t.age}</TableHead>
-              <TableHead>{t.dateOfBirth}</TableHead>
-              <TableHead>{t.deathOfDeath}</TableHead>
-              <TableHead>{t.sex}</TableHead>
-              <TableHead>{t.category}</TableHead>
-              <TableHead>{t.source}</TableHead>
-              <TableHead>{t.image}</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>English name</TableHead>
+              <TableHead>Age</TableHead>
+              <TableHead>Date of birth</TableHead>
+              <TableHead>Date of death</TableHead>
+              <TableHead>Sex</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead>Image</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={9} className="py-10 text-center">{t.loading}</TableCell>
+                <TableCell colSpan={9} className="py-10 text-center">Loading...</TableCell>
               </TableRow>
             ) : data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="py-10 text-center">{t.noResults}</TableCell>
+                <TableCell colSpan={9} className="py-10 text-center">No results</TableCell>
               </TableRow>
             ) : (
               data.map((p) => (
@@ -304,7 +267,7 @@ export default function Home() {
                         />
                       ) : (
                         <Button asChild variant="outline" size="sm">
-                          <a href="/admin">{t.upload}</a>
+                          <a href="/admin">Upload</a>
                         </Button>
                       )}
                     </div>
@@ -317,9 +280,9 @@ export default function Home() {
       ) : (
         <div>
           {loading ? (
-            <div className="py-10 text-center">{t.loading}</div>
+            <div className="py-10 text-center">Loading...</div>
           ) : galleryData.length === 0 ? (
-            <div className="py-10 text-center">{t.noImagesFound}</div>
+            <div className="py-10 text-center">No images found</div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {galleryData.map((p) => (
@@ -333,7 +296,7 @@ export default function Home() {
                     <div className="font-medium truncate" title={p.name}>{p.name}</div>
                     <div className="text-muted-foreground text-xs truncate" title={p.enName}>{p.enName}</div>
                     <div className="text-muted-foreground text-xs">{p.age ?? ''} {p.sex ? `• ${String(p.sex).toUpperCase()}` : ''} • {categoryForId(p.id)}</div>
-                    <div className="text-muted-foreground text-xs">{t.dateOfBirth} {formatDateOnly(p.dob)} • {t.deathOfDeath} {dodForId(p.id)}</div>
+                    <div className="text-muted-foreground text-xs">Date of birth {formatDateOnly(p.dob)} • Date of death {dodForId(p.id)}</div>
                   </div>
                 </div>
               ))}
@@ -343,7 +306,7 @@ export default function Home() {
       )}
 
       <div className="mt-4 flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">{t.page} {page} {t.of} {totalPages}</div>
+        <div className="text-sm text-muted-foreground">Page {page} of {totalPages}</div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setPage(1)} disabled={page <= 1}>{'<<'}</Button>
           <Button variant="outline" size="sm" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>{'<'}</Button>
@@ -355,7 +318,7 @@ export default function Home() {
       <Dialog open={!!editing} onOpenChange={(o) => { if (!o) setEditing(null) }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t.proposeEdit}</DialogTitle>
+            <DialogTitle>Propose edit</DialogTitle>
           </DialogHeader>
           {editing && (
             <EditForm
@@ -363,7 +326,6 @@ export default function Home() {
               imageUrl={hasImageForId(editing.id) ? squareImageUrlForId(editing.id, 600) : null}
               onClose={() => setEditing(null)}
               onSaved={() => { setEditing(null); fetchData() }}
-              translations={t}
             />
           )}
         </DialogContent>
@@ -377,14 +339,13 @@ export default function Home() {
           categoryForId={categoryForId}
           formatDateOnly={formatDateOnly}
           onClose={() => setShowSlideshow(false)}
-          translations={t}
         />
       )}
     </main>
   )
 }
 
-function EditForm({ person, imageUrl, onClose, onSaved, translations: t }: { person: Person; imageUrl?: string | null; onClose: () => void; onSaved: () => void; translations: any }) {
+function EditForm({ person, imageUrl, onClose, onSaved }: { person: Person; imageUrl?: string | null; onClose: () => void; onSaved: () => void }) {
   const [form, setForm] = useState<Person>(person)
   const [saving, setSaving] = useState(false)
 
@@ -411,44 +372,44 @@ function EditForm({ person, imageUrl, onClose, onSaved, translations: t }: { per
             <img src={imageUrl} alt={person.name || person.enName || person.id} className="w-28 aspect-square rounded-md object-cover" />
           ) : (
             <div className="w-28 aspect-square flex items-center justify-center bg-muted rounded-md">
-              <Button asChild variant="outline" size="sm"><a href="/admin">{t.upload}</a></Button>
+              <Button asChild variant="outline" size="sm"><a href="/admin">Upload</a></Button>
             </div>
           )}
         </div>
         <div className="flex-1 grid grid-cols-2 gap-3">
           <div>
-            <label className="text-sm text-muted-foreground">{t.name}</label>
+            <label className="text-sm text-muted-foreground">Name</label>
             <Input value={form.name} onChange={(e) => updateField('name', e.target.value)} />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">{t.englishName}</label>
+            <label className="text-sm text-muted-foreground">English name</label>
             <Input value={form.enName} onChange={(e) => updateField('enName', e.target.value)} />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">{t.age}</label>
+            <label className="text-sm text-muted-foreground">Age</label>
             <Input type="number" value={form.age ?? ''} onChange={(e) => updateField('age', e.target.value ? parseInt(e.target.value, 10) : null)} />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">{t.dateOfBirth}</label>
+            <label className="text-sm text-muted-foreground">Date of birth</label>
             <Input value={form.dob ? String(form.dob).slice(0, 10) : ''} onChange={(e) => updateField('dob', e.target.value ? new Date(e.target.value).toISOString() : null)} />
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">{t.sex}</label>
+            <label className="text-sm text-muted-foreground">Sex</label>
             <select className="h-9 rounded-md border bg-background px-2 text-sm w-full" value={form.sex ?? ''} onChange={(e) => updateField('sex', e.target.value || null)}>
-              <option value="">{t.unknown}</option>
+              <option value="">Unknown</option>
               <option value="m">m</option>
               <option value="f">f</option>
             </select>
           </div>
           <div>
-            <label className="text-sm text-muted-foreground">{t.source}</label>
+            <label className="text-sm text-muted-foreground">Source</label>
             <Input value={form.source ?? ''} onChange={(e) => updateField('source', e.target.value)} />
           </div>
         </div>
       </div>
       <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={onClose} disabled={saving}>{t.cancel}</Button>
-        <Button onClick={save} disabled={saving}>{saving ? t.proposing : t.proposeEditButton}</Button>
+        <Button variant="outline" onClick={onClose} disabled={saving}>Cancel</Button>
+        <Button onClick={save} disabled={saving}>{saving ? 'Proposing...' : 'Propose edit'}</Button>
       </div>
     </div>
   )
