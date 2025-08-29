@@ -44,6 +44,10 @@ export default function Home() {
   const [nameFilter, setNameFilter] = useState('')
   const [ageMax, setAgeMax] = useState<number | null>(null)
   const [categoryFilter, setCategoryFilter] = useState<string>('')
+  const [sortKey, setSortKey] = useState<
+    'id' | 'name' | 'enName' | 'age' | 'dob' | 'dod' | 'sex' | 'category' | 'source'
+  >('dod')
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc')
 
   useEffect(() => {
     setMounted(true)
@@ -74,6 +78,8 @@ export default function Home() {
         params.set('age', `0-${ageMax}`)
       }
       if (categoryFilter) params.set('category', categoryFilter)
+      params.set('sortKey', sortKey)
+      params.set('sortDir', sortDir)
 
       const res = await fetch(`/api/rows?${params.toString()}`)
       const json = await res.json()
@@ -87,7 +93,7 @@ export default function Home() {
     } finally {
       setLoading(false)
     }
-  }, [page, limit, nameFilter, ageMax, categoryFilter])
+  }, [page, limit, nameFilter, ageMax, categoryFilter, sortKey, sortDir])
 
   useEffect(() => {
     fetchData()
@@ -151,8 +157,16 @@ export default function Home() {
   }, [])
 
   const filteredData = useMemo(() => data, [data])
+  const sortedData = useMemo(() => filteredData, [filteredData])
+  const toggleSort = useCallback(
+    (key: typeof sortKey) => {
+      setSortDir((prevDir) => (sortKey === key ? (prevDir === 'asc' ? 'desc' : 'asc') : 'asc'))
+      setSortKey(key)
+    },
+    [sortKey]
+  )
 
-  const galleryData = useMemo(() => filteredData, [filteredData])
+  const galleryData = useMemo(() => sortedData, [sortedData])
 
   if (!mounted) {
     return (
@@ -188,6 +202,15 @@ export default function Home() {
               disabled={galleryData.length === 0}
             >
               Slideshow
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                /* no-op for now */
+              }}
+            >
+              Download
             </Button>
           </div>
         </div>
@@ -253,16 +276,86 @@ export default function Home() {
         <Table className="min-w-[1200px]">
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>English name</TableHead>
-              <TableHead>Age</TableHead>
-              <TableHead>Date of birth</TableHead>
-              <TableHead>Gender</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead title="Community generated information">
+              <TableHead
+                onClick={() => toggleSort('id')}
+                aria-sort={
+                  sortKey === 'id' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                ID {sortKey === 'id' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('name')}
+                aria-sort={
+                  sortKey === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                Name {sortKey === 'name' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('enName')}
+                aria-sort={
+                  sortKey === 'enName' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                English name {sortKey === 'enName' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('age')}
+                aria-sort={
+                  sortKey === 'age' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                Age {sortKey === 'age' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('dob')}
+                aria-sort={
+                  sortKey === 'dob' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                Date of birth {sortKey === 'dob' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('sex')}
+                aria-sort={
+                  sortKey === 'sex' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                Gender {sortKey === 'sex' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                onClick={() => toggleSort('source')}
+                aria-sort={
+                  sortKey === 'source' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+                title="Sort"
+              >
+                Source {sortKey === 'source' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              </TableHead>
+              <TableHead
+                title="Community generated information"
+                onClick={() => toggleSort('dod')}
+                aria-sort={
+                  sortKey === 'dod' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+              >
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Date of death
+                  Date of death {sortKey === 'dod' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
                     className="text-muted-foreground cursor-help"
                     title="Community generated information"
@@ -284,9 +377,16 @@ export default function Home() {
                   </span>
                 </span>
               </TableHead>
-              <TableHead title="Community generated information">
+              <TableHead
+                title="Community generated information"
+                onClick={() => toggleSort('category')}
+                aria-sort={
+                  sortKey === 'category' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+                }
+                className="cursor-pointer select-none"
+              >
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Category
+                  Category {sortKey === 'category' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
                     className="text-muted-foreground cursor-help"
                     title="Community generated information"
@@ -324,7 +424,7 @@ export default function Home() {
                 </TableCell>
               </TableRow>
             ) : (
-              filteredData.map((p) => (
+              sortedData.map((p) => (
                 <TableRow
                   key={p.id}
                   className="tooltip cursor-pointer"

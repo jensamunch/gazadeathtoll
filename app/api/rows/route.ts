@@ -17,6 +17,18 @@ export async function GET(request: Request) {
     const sexFilter = searchParams.get('sex')
     const nameFilter = searchParams.get('name')
     const category = searchParams.get('category')
+    const sortKey = searchParams.get('sortKey') as
+      | 'id'
+      | 'name'
+      | 'enName'
+      | 'age'
+      | 'dob'
+      | 'dod'
+      | 'sex'
+      | 'category'
+      | 'source'
+      | null
+    const sortDir = (searchParams.get('sortDir') as 'asc' | 'desc') || 'asc'
 
     console.log('API: Raw filter parameters:', { ageFilter, sexFilter, nameFilter, category })
 
@@ -64,7 +76,14 @@ export async function GET(request: Request) {
       ]
     }
 
-    console.log('API: Applying filters:', { ageFilter, sexFilter, nameFilter, category })
+    console.log('API: Applying filters:', {
+      ageFilter,
+      sexFilter,
+      nameFilter,
+      category,
+      sortKey,
+      sortDir,
+    })
     console.log('API: Where clause:', where)
     // Category filter: apply deterministic mapping and paginate accurately
     if (category) {
@@ -81,7 +100,22 @@ export async function GET(request: Request) {
         select: { id: true },
         orderBy: { createdAt: 'desc' },
       })
-      const filteredIds = allIds.map((p) => p.id).filter((id) => categoryForId(id) === category)
+      let filteredIds = allIds.map((p) => p.id).filter((id) => categoryForId(id) === category)
+      if (sortKey) {
+        const val = (id: string) => {
+          switch (sortKey) {
+            case 'id':
+              return id
+            case 'dod':
+              return id // preserve original order here; we will sort after fetching due to derived field
+            default:
+              return id
+          }
+        }
+        filteredIds = filteredIds.sort(
+          (a, b) => String(val(a)).localeCompare(String(val(b))) * (sortDir === 'asc' ? 1 : -1)
+        )
+      }
       const totalCount = filteredIds.length
       const pageIds = filteredIds.slice(offset, offset + limit)
       let persons: Person[] = []
@@ -102,12 +136,15 @@ export async function GET(request: Request) {
       })
     }
 
-    const persons = await prisma.person.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-      skip: offset,
-    })
+    let orderBy: Prisma.PersonOrderByWithRelationInput | undefined
+    if (sortKey && ['id', 'name', 'enName', 'age', 'dob', 'sex', 'source'].includes(sortKey)) {
+      // Map sortKey to Prisma fields
+      const key = sortKey as 'id' | 'name' | 'enName' | 'age' | 'dob' | 'sex' | 'source'
+      orderBy = { [key]: sortDir }
+    } else {
+      orderBy = { createdAt: 'desc' }
+    }
+    const persons = await prisma.person.findMany({ where, orderBy, take: limit, skip: offset })
 
     console.log('API: Found persons:', persons.length)
 
