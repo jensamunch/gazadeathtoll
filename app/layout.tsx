@@ -4,7 +4,7 @@ import ClientLayout from './_components/ClientLayout'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Palestinian Deaths',
+  title: 'Palestinian Deaths since Oct. 7 2023',
   description: 'Record of Palestinian deaths in Gaza since Oct. 7, 2023',
 }
 

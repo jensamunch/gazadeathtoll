@@ -88,9 +88,7 @@ export async function GET(request: Request) {
       if (pageIds.length > 0) {
         const found = await prisma.person.findMany({ where: { id: { in: pageIds } } })
         const map = new Map(found.map((p) => [p.id, p]))
-        persons = pageIds
-          .map((id) => map.get(id))
-          .filter((p): p is Person => Boolean(p))
+        persons = pageIds.map((id) => map.get(id)).filter((p): p is Person => Boolean(p))
       }
       console.log('API: Found persons:', persons.length)
       return NextResponse.json({

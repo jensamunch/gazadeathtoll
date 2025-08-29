@@ -118,6 +118,35 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* (Removed custom pen cursor) */
+
+/* Instant tooltip utility */
+.tooltip {
+  position: relative;
+}
+.tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: -28px;
+  left: 0;
+  white-space: nowrap;
+  background: rgba(17, 24, 39, 0.9);
+  color: white;
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 80ms ease,
+    transform 80ms ease;
+}
+.tooltip:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

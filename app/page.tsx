@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +13,7 @@ import {
   TableCell,
 } from '@/components/ui/table'
 // import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import Slideshow from './_components/Slideshow'
 
 type Person = {
@@ -125,11 +126,28 @@ export default function Home() {
 
   // Deterministic category assignment
   const categoryForId = useCallback((id: string): string => {
-    const categories = ['civilian', 'medical staff', 'journalist', 'child']
+    const categories = ['civilian', 'medical staff', 'journalist', 'other']
     let hash = 0
     for (let i = 0; i < id.length; i++) hash = (hash * 37 + id.charCodeAt(i)) | 0
     const idx = Math.abs(hash) % categories.length
     return categories[idx]
+  }, [])
+
+  // Deterministic mock geo location (lat/long within Gaza region)
+  const geoForId = useCallback((id: string): { lat: number; lon: number } => {
+    // Simple hash -> 0..1
+    let hash = 0
+    for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) | 0
+    const n1 = Math.abs(hash % 1000) / 1000 // 0..0.999
+    const n2 = Math.abs((hash >> 3) % 1000) / 1000
+    // Gaza approx bounds
+    const latMin = 31.2,
+      latMax = 31.6
+    const lonMin = 34.2,
+      lonMax = 34.6
+    const lat = latMin + n1 * (latMax - latMin)
+    const lon = lonMin + n2 * (lonMax - lonMin)
+    return { lat, lon }
   }, [])
 
   const filteredData = useMemo(() => data, [data])
@@ -173,9 +191,9 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className="lg:ml-auto mt-2 lg:mt-0 flex items-center">
+        <div className="mt-2 flex items-center lg:mt-0 lg:ml-auto">
           <div className="inline-flex items-center">
-            <div className="flex w-full items-center mr-2 lg:mr-8">
+            <div className="mr-2 flex w-full items-center lg:mr-8">
               <Input
                 className="w-full md:w-56"
                 value={nameFilter}
@@ -186,7 +204,7 @@ export default function Home() {
                 placeholder="Filter by name"
               />
             </div>
-            <div className="flex w-full items-center mr-2 lg:mr-8">
+            <div className="mr-2 flex w-full items-center lg:mr-8">
               <span className="text-muted-foreground text-sm">Age</span>
               <div className="flex w-full items-center gap-2 md:w-auto">
                 <input
@@ -204,7 +222,6 @@ export default function Home() {
                   }}
                   aria-label="Maximum age"
                 />
-      
               </div>
             </div>
             <div className="flex w-full items-center">
@@ -221,7 +238,7 @@ export default function Home() {
                 <option value="civilian">civilian</option>
                 <option value="medical staff">medical staff</option>
                 <option value="journalist">journalist</option>
-                <option value="child">child</option>
+                <option value="other">other</option>
               </select>
             </div>
           </div>
@@ -241,11 +258,56 @@ export default function Home() {
               <TableHead>English name</TableHead>
               <TableHead>Age</TableHead>
               <TableHead>Date of birth</TableHead>
-              <TableHead className="text-red-600" title="mock data">Date of death</TableHead>
-              <TableHead>Sex</TableHead>
-              <TableHead className="text-red-600" title="mock data">Category</TableHead>
+              <TableHead>Gender</TableHead>
               <TableHead>Source</TableHead>
-              <TableHead className="text-red-600" title="mock data">Image</TableHead>
+              <TableHead title="Community generated information">
+                <span className="inline-flex items-center gap-1 font-semibold">
+                  Date of death
+                  <span
+                    className="text-muted-foreground cursor-help"
+                    title="Community generated information"
+                    aria-label="Community generated information"
+                  >
+                    ⓘ
+                  </span>
+                </span>
+              </TableHead>
+              <TableHead title="Community generated information">
+                <span className="inline-flex items-center gap-1 font-semibold">
+                  Location of death
+                  <span
+                    className="text-muted-foreground cursor-help"
+                    title="Community generated information"
+                    aria-label="Community generated information"
+                  >
+                    ⓘ
+                  </span>
+                </span>
+              </TableHead>
+              <TableHead title="Community generated information">
+                <span className="inline-flex items-center gap-1 font-semibold">
+                  Category
+                  <span
+                    className="text-muted-foreground cursor-help"
+                    title="Community generated information"
+                    aria-label="Community generated information"
+                  >
+                    ⓘ
+                  </span>
+                </span>
+              </TableHead>
+              <TableHead title="Community generated information">
+                <span className="inline-flex items-center gap-1 font-semibold">
+                  Image
+                  <span
+                    className="text-muted-foreground cursor-help"
+                    title="Community generated information"
+                    aria-label="Community generated information"
+                  >
+                    ⓘ
+                  </span>
+                </span>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -263,18 +325,29 @@ export default function Home() {
               </TableRow>
             ) : (
               filteredData.map((p) => (
-                <TableRow key={p.id} className="cursor-pointer" onClick={() => setEditing(p)}>
+                <TableRow
+                  key={p.id}
+                  className="tooltip cursor-pointer"
+                  data-tip="Suggest changes"
+                  onClick={() => setEditing(p)}
+                >
                   <TableCell className="font-mono text-xs">{p.id}</TableCell>
                   <TableCell>{p.name}</TableCell>
                   <TableCell>{p.enName}</TableCell>
                   <TableCell>{p.age ?? ''}</TableCell>
                   <TableCell>{formatDateOnly(p.dob)}</TableCell>
-                  <TableCell>{dodForId(p.id)}</TableCell>
                   <TableCell className="uppercase">{p.sex ?? ''}</TableCell>
-                  <TableCell className="capitalize">{categoryForId(p.id)}</TableCell>
                   <TableCell className="max-w-[20ch] truncate" title={p.source ?? undefined}>
                     {p.source ?? ''}
                   </TableCell>
+                  <TableCell>{dodForId(p.id)}</TableCell>
+                  <TableCell>
+                    {(() => {
+                      const g = geoForId(p.id)
+                      return `${g.lat.toFixed(4)}, ${g.lon.toFixed(4)}`
+                    })()}
+                  </TableCell>
+                  <TableCell className="capitalize">{categoryForId(p.id)}</TableCell>
                   <TableCell>
                     <div className="flex items-center">
                       {hasImageForId(p.id) ? (
@@ -393,12 +466,16 @@ export default function Home() {
           if (!o) setEditing(null)
         }}
       >
-        <DialogContent className="sm:max-w-[900px] md:max-w-[1100px] lg:max-w-[1200px] p-8 rounded-2xl shadow-xl">
+        <DialogContent className="rounded-2xl p-8 shadow-xl sm:max-w-[900px] md:max-w-[1100px] lg:max-w-[1200px]">
+          <DialogTitle className="sr-only">Suggest changes</DialogTitle>
 
           {editing && (
             <EditForm
               person={editing}
               imageUrl={hasImageForId(editing.id) ? squareImageUrlForId() : null}
+              defaultDod={dodForId(editing.id)}
+              defaultGeo={geoForId(editing.id)}
+              defaultCategory={categoryForId(editing.id)}
               onClose={() => setEditing(null)}
               onSaved={() => {
                 setEditing(null)
@@ -419,34 +496,63 @@ export default function Home() {
     </main>
   )
 }
+// Leaflet map (client-only) for selecting location
+const LeafletMap = dynamic(
+  () => import('./_components/leaflet/LeafletPicker').then((m) => m.LeafletPicker),
+  { ssr: false }
+)
 
 function EditForm({
   person,
   imageUrl,
+  defaultDod,
+  defaultGeo,
+  defaultCategory,
   onClose,
   onSaved,
 }: {
   person: Person
   imageUrl?: string | null
+  defaultDod: string
+  defaultGeo: { lat: number; lon: number }
+  defaultCategory: string
   onClose: () => void
   onSaved: () => void
 }) {
-  const [form, setForm] = useState<Person>(person)
   const [saving, setSaving] = useState(false)
+  // Mock, community-proposed fields
+  const [dod, setDod] = useState<string>(() => String(defaultDod).slice(0, 10))
+  const [lat, setLat] = useState<number>(defaultGeo.lat)
+  const [lon, setLon] = useState<number>(defaultGeo.lon)
+  const [category, setCategory] = useState<string>(defaultCategory)
+  const [file, setFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(imageUrl ?? null)
 
-  const updateField = <K extends keyof Person>(key: K, value: Person[K]) =>
-    setForm((f) => ({ ...f, [key]: value }))
+  const onPickFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const f = e.target.files?.[0] || null
+    setFile(f)
+    if (f) setPreview(URL.createObjectURL(f))
+  }
+
+  // Dirty state indicators
+  const isDodDirty = dod !== String(defaultDod).slice(0, 10)
+  const isGeoDirty = Math.abs(lat - defaultGeo.lat) > 1e-6 || Math.abs(lon - defaultGeo.lon) > 1e-6
+  const isCategoryDirty = category !== defaultCategory
+  const isImageDirty = Boolean(file)
+  const isAnyDirty = isDodDirty || isGeoDirty || isCategoryDirty || isImageDirty
 
   const save = async () => {
     setSaving(true)
     try {
-      const res = await fetch('/api/rows', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+      // For now, just log the suggested changes. Backend fields are community-generated.
+      // You can wire this to a suggestions endpoint later.
+      console.log('Suggested changes', {
+        id: person.id,
+        dateOfDeath: dod,
+        location: { lat, lon },
+        category,
+        imageSelected: Boolean(file),
       })
-      const j = await res.json()
-      if (!res.ok || !j.ok) throw new Error(j.error || 'Failed to save')
       onSaved()
     } catch (e) {
       console.error(e)
@@ -456,69 +562,108 @@ function EditForm({
 
   return (
     <div className="grid gap-6">
-      <div className="flex items-start gap-6">
-        <div className="w-36">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={person.name || person.enName || person.id}
-              width={144}
-              height={144}
-              className="aspect-square w-36 rounded-xl border object-cover shadow-sm"
-            />
-          ) : (
-            <div className="bg-muted/60 flex aspect-square w-36 items-center justify-center rounded-xl border">
-              <Button asChild variant="outline" size="sm">
-                <a href="/admin">Upload</a>
-              </Button>
-            </div>
-          )}
+      <div className="bg-muted/30 rounded-md border p-4">
+        <div className="mt-1 flex flex-wrap items-baseline gap-3">
+          <div className="text-lg font-semibold">{person.name}</div>
+          <div className="text-muted-foreground text-sm">{person.enName}</div>
+          <div className="ml-auto font-mono text-xs">ID: {person.id}</div>
         </div>
-        <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">Name</label>
-            <Input value={form.name} onChange={(e) => updateField('name', e.target.value)} className="h-11" />
+      </div>
+      {isAnyDirty && (
+        <div className="rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          You have unsaved changes
+        </div>
+      )}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="space-y-2">
+          <label className="text-muted-foreground text-sm">
+            Date of death
+            {isDodDirty && (
+              <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                edited
+              </span>
+            )}
+          </label>
+          <Input
+            type="date"
+            className={`h-11 ${isDodDirty ? 'ring-1 ring-amber-400' : ''}`}
+            value={dod}
+            onChange={(e) => setDod(e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-muted-foreground text-sm">
+            Category
+            {isCategoryDirty && (
+              <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                edited
+              </span>
+            )}
+          </label>
+          <select
+            className={`bg-background h-11 w-full rounded-md border px-3 text-sm ${
+              isCategoryDirty ? 'ring-1 ring-amber-400' : ''
+            }`}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="civilian">civilian</option>
+            <option value="medical staff">medical staff</option>
+            <option value="journalist">journalist</option>
+            <option value="other">other</option>
+          </select>
+        </div>
+
+        <div className="space-y-3 md:col-span-2">
+          <label className="text-muted-foreground text-sm">
+            Location of death
+            {isGeoDirty && (
+              <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                edited
+              </span>
+            )}
+          </label>
+          <LeafletMap
+            lat={lat}
+            lon={lon}
+            onChange={({ lat: newLat, lon: newLon }) => {
+              setLat(newLat)
+              setLon(newLon)
+            }}
+          />
+          <div className="text-muted-foreground text-xs">
+            Drag/zoom the map, click to place the marker.
           </div>
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">English name</label>
-            <Input value={form.enName} onChange={(e) => updateField('enName', e.target.value)} className="h-11" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">Age</label>
-            <Input
-              type="number"
-              value={form.age ?? ''}
-              onChange={(e) =>
-                updateField('age', e.target.value ? parseInt(e.target.value, 10) : null)
-              }
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">Date of birth</label>
-            <Input
-              value={form.dob ? String(form.dob).slice(0, 10) : ''}
-              onChange={(e) =>
-                updateField('dob', e.target.value ? new Date(e.target.value).toISOString() : null)
-              }
-              className="h-11"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">Sex</label>
-            <select
-              className="bg-background h-11 w-full rounded-md border px-3 text-sm"
-              value={form.sex ?? ''}
-              onChange={(e) => updateField('sex', (e.target.value as 'm' | 'f') || null)}
-            >
-              <option value="">Unknown</option>
-              <option value="m">m</option>
-              <option value="f">f</option>
-            </select>
-          </div>
-          <div className="space-y-2">
-            <label className="text-muted-foreground text-sm">Source</label>
-            <Input value={form.source ?? ''} onChange={(e) => updateField('source', e.target.value)} className="h-11" />
+        </div>
+
+        <div className="space-y-2 md:col-span-2">
+          <label className="text-muted-foreground text-sm">
+            Image
+            {isImageDirty && (
+              <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-800">
+                edited
+              </span>
+            )}
+          </label>
+          <div className="flex items-center gap-4">
+            <div className="w-28">
+              {preview ? (
+                <Image
+                  src={preview}
+                  alt={person.name || person.enName || person.id}
+                  width={112}
+                  height={112}
+                  className={`aspect-square w-28 rounded-md border object-cover ${
+                    isImageDirty ? 'ring-1 ring-amber-400' : ''
+                  }`}
+                />
+              ) : (
+                <div className="bg-muted/60 flex aspect-square w-28 items-center justify-center rounded-md border">
+                  <span className="text-muted-foreground text-xs">No image</span>
+                </div>
+              )}
+            </div>
+            <Input type="file" accept="image/*" onChange={onPickFile} className="h-11" />
           </div>
         </div>
       </div>
@@ -527,7 +672,7 @@ function EditForm({
           Cancel
         </Button>
         <Button onClick={save} disabled={saving} className="h-11 px-6">
-          {saving ? 'Proposing...' : 'Propose edit'}
+          {saving ? 'Submitting…' : 'Suggest changes'}
         </Button>
       </div>
     </div>
