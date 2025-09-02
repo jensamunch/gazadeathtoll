@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { ThemeProvider } from '@/components/theme-provider'
 import ClientLayout from './_components/ClientLayout'
 import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: 'Palestinian Deaths since Oct. 7 2023',
@@ -27,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <ClientLayout>{children}</ClientLayout>
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
