@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = store.get('locale')?.value || 'en'
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
   return (
-    <html dir={dir} lang={locale}>
+    <html dir={dir} lang={locale} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
