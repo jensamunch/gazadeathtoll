@@ -472,7 +472,7 @@ export default function Home() {
                   key={p.id}
                   className="cursor-pointer"
                   onClick={() => setEditing(p)}
-                  onMouseEnter={showTooltip('Submit changes')}
+                  onMouseEnter={showTooltip(t('submitChangesTooltip'))}
                   onMouseMove={moveTooltip}
                   onMouseLeave={hideTooltip}
                 >
