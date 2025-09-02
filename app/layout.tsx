@@ -5,6 +5,8 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextIntlClientProvider } from 'next-intl'
+import { cookies } from 'next/headers'
+import DirectionWrapper from './_components/DirectionWrapper'
 
 export const metadata: Metadata = {
   title: 'Palestinian Deaths since Oct. 7 2023',
@@ -12,8 +14,11 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const store = await cookies()
+  const locale = store.get('locale')?.value || 'en'
+  const dir = locale === 'ar' ? 'rtl' : 'ltr'
   return (
-    <html>
+    <html dir={dir} lang={locale}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -23,14 +28,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="min-h-screen">
         <NextIntlClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ClientLayout>{children}</ClientLayout>
-          </ThemeProvider>
+          <DirectionWrapper dir={dir}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ClientLayout>{children}</ClientLayout>
+            </ThemeProvider>
+          </DirectionWrapper>
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
