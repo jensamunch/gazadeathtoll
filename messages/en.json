@@ -1,0 +1,12 @@
+{
+  "Nav": {
+    "title": "Palestinian Deaths since Oct. 7 2023",
+    "docs": "Project documentation"
+  },
+  "Home": {
+    "list": "List",
+    "gallery": "Gallery",
+    "slideshow": "Slideshow",
+    "download": "Download"
+  }
+}

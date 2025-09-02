@@ -8,6 +8,7 @@ import {
 } from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -45,6 +46,7 @@ export default function Home() {
   const [view, setView] = useState<'list' | 'gallery'>('list')
   const [editing, setEditing] = useState<Person | null>(null)
   const [showSlideshow, setShowSlideshow] = useState(false)
+  const t = useTranslations('Home')
 
   // Instant, cursor-following tooltip
   const [tooltip, setTooltip] = useState<{
@@ -215,14 +217,14 @@ export default function Home() {
               size="sm"
               onClick={() => setView('list')}
             >
-              List
+              {t('list')}
             </Button>
             <Button
               variant={view === 'gallery' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setView('gallery')}
             >
-              Gallery
+              {t('gallery')}
             </Button>
             <Button
               variant="outline"
@@ -230,7 +232,7 @@ export default function Home() {
               onClick={() => setShowSlideshow(true)}
               disabled={galleryData.length === 0}
             >
-              Rolling
+              {t('slideshow')}
             </Button>
             <Button
               variant="outline"
@@ -239,7 +241,7 @@ export default function Home() {
                 /* no-op for now */
               }}
             >
-              Download
+              {t('download')}
             </Button>
           </div>
         </div>
