@@ -12,16 +12,6 @@ export default function ThemeToggle() {
     setMounted(true)
   }, [])
 
-  useEffect(() => {
-    if (mounted && theme) {
-      // Tell AG Grid to switch color schemes per docs
-      document.documentElement.setAttribute(
-        'data-ag-theme-mode',
-        theme === 'dark' ? 'dark' : 'light'
-      )
-    }
-  }, [theme, mounted])
-
   if (!mounted) {
     return (
       <div className="flex items-center gap-2">

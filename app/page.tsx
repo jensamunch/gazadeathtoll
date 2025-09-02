@@ -47,6 +47,8 @@ export default function Home() {
   const [editing, setEditing] = useState<Person | null>(null)
   const [showSlideshow, setShowSlideshow] = useState(false)
   const t = useTranslations('Home')
+  const tCommon = useTranslations('Common')
+  const tDialog = useTranslations('Dialog')
 
   // Instant, cursor-following tooltip
   const [tooltip, setTooltip] = useState<{
@@ -255,11 +257,11 @@ export default function Home() {
                   setNameFilter(e.target.value)
                   setPage(1)
                 }}
-                placeholder="Filter by name"
+                placeholder={t('filterByName')}
               />
             </div>
             <div className="mr-2 flex w-full items-center lg:mr-8">
-              <span className="text-muted-foreground mr-2 text-sm">Age</span>
+              <span className="text-muted-foreground mr-2 text-sm">{t('age')}</span>
               <div className="flex w-full items-center gap-2 md:w-auto">
                 <input
                   type="range"
@@ -274,12 +276,12 @@ export default function Home() {
                     setAgeMax(clamped)
                     setPage(1)
                   }}
-                  aria-label="Maximum age"
+                  aria-label={t('maxAgeAria')}
                 />
               </div>
             </div>
             <div className="flex w-full items-center">
-              <span className="text-muted-foreground mr-2 text-sm">Category</span>
+              <span className="text-muted-foreground mr-2 text-sm">{t('category')}</span>
               <select
                 className="bg-background h-9 w-full rounded-md border px-2 text-sm md:w-[180px]"
                 value={categoryFilter}
@@ -288,11 +290,11 @@ export default function Home() {
                   setPage(1)
                 }}
               >
-                <option value="">All</option>
-                <option value="civilian">civilian</option>
-                <option value="medical staff">medical staff</option>
-                <option value="journalist">journalist</option>
-                <option value="other">other</option>
+                <option value="">{t('all')}</option>
+                <option value="civilian">{t('civilian')}</option>
+                <option value="medical staff">{t('medicalStaff')}</option>
+                <option value="journalist">{t('journalist')}</option>
+                <option value="other">{t('other')}</option>
               </select>
             </div>
           </div>
@@ -300,7 +302,10 @@ export default function Home() {
       </div>
 
       <div className="text-muted-foreground my-2 text-sm">
-        Loaded {filteredData.length.toLocaleString()} | Total matching {total.toLocaleString()}
+        {t('loadedCount', {
+          count: filteredData.length.toLocaleString(),
+          total: total.toLocaleString(),
+        })}
       </div>
 
       {view === 'list' ? (
@@ -315,7 +320,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                ID {sortKey === 'id' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('id')} {sortKey === 'id' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('name')}
@@ -325,7 +330,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                Name {sortKey === 'name' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('name')} {sortKey === 'name' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('enName')}
@@ -335,7 +340,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                English name {sortKey === 'enName' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('enName')} {sortKey === 'enName' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('age')}
@@ -345,7 +350,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                Age {sortKey === 'age' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('ageHeader')} {sortKey === 'age' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('dob')}
@@ -355,7 +360,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                Date of birth {sortKey === 'dob' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('dob')} {sortKey === 'dob' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('sex')}
@@ -365,7 +370,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                Gender {sortKey === 'sex' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('sex')} {sortKey === 'sex' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('source')}
@@ -375,7 +380,7 @@ export default function Home() {
                 className="cursor-pointer select-none"
                 title="Sort"
               >
-                Source {sortKey === 'source' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                {t('source')} {sortKey === 'source' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
                 onClick={() => toggleSort('dod')}
@@ -385,11 +390,11 @@ export default function Home() {
                 className="cursor-pointer select-none"
               >
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Date of death {sortKey === 'dod' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                  {t('dod')} {sortKey === 'dod' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
                     className="text-muted-foreground cursor-default"
-                    aria-label="Community submission"
-                    onMouseEnter={showTooltip('Community submission')}
+                    aria-label={t('communitySubmission')}
+                    onMouseEnter={showTooltip(t('communitySubmission'))}
                     onMouseMove={moveTooltip}
                     onMouseLeave={hideTooltip}
                   >
@@ -399,11 +404,11 @@ export default function Home() {
               </TableHead>
               <TableHead>
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Location of death
+                  {t('locationOfDeath')}
                   <span
                     className="text-muted-foreground cursor-default"
-                    aria-label="Community submission"
-                    onMouseEnter={showTooltip('Community submission')}
+                    aria-label={t('communitySubmission')}
+                    onMouseEnter={showTooltip(t('communitySubmission'))}
                     onMouseMove={moveTooltip}
                     onMouseLeave={hideTooltip}
                   >
@@ -419,11 +424,12 @@ export default function Home() {
                 className="cursor-pointer select-none"
               >
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Category {sortKey === 'category' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                  {t('categoryHeader')}{' '}
+                  {sortKey === 'category' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
                     className="text-muted-foreground cursor-default"
-                    aria-label="Community submission"
-                    onMouseEnter={showTooltip('Community submission')}
+                    aria-label={t('communitySubmission')}
+                    onMouseEnter={showTooltip(t('communitySubmission'))}
                     onMouseMove={moveTooltip}
                     onMouseLeave={hideTooltip}
                   >
@@ -433,11 +439,11 @@ export default function Home() {
               </TableHead>
               <TableHead>
                 <span className="inline-flex items-center gap-1 font-semibold">
-                  Image
+                  {t('image')}
                   <span
                     className="text-muted-foreground cursor-default"
-                    aria-label="Community submission"
-                    onMouseEnter={showTooltip('Community submission')}
+                    aria-label={t('communitySubmission')}
+                    onMouseEnter={showTooltip(t('communitySubmission'))}
                     onMouseMove={moveTooltip}
                     onMouseLeave={hideTooltip}
                   >
@@ -451,13 +457,13 @@ export default function Home() {
             {loading ? (
               <TableRow>
                 <TableCell colSpan={9} className="py-10 text-center">
-                  Loading...
+                  {tCommon('loading')}
                 </TableCell>
               </TableRow>
             ) : data.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={9} className="py-10 text-center">
-                  No results
+                  {tCommon('noResults')}
                 </TableCell>
               </TableRow>
             ) : (
@@ -499,7 +505,7 @@ export default function Home() {
                         />
                       ) : (
                         <Button asChild variant="outline" size="sm">
-                          <a href="/admin">Upload</a>
+                          <a href="/admin">{tCommon('upload')}</a>
                         </Button>
                       )}
                     </div>
@@ -512,9 +518,9 @@ export default function Home() {
       ) : (
         <div>
           {loading ? (
-            <div className="py-10 text-center">Loading...</div>
+            <div className="py-10 text-center">{tCommon('loading')}</div>
           ) : galleryData.length === 0 ? (
-            <div className="py-10 text-center">No images found</div>
+            <div className="py-10 text-center">{tCommon('noImagesFound')}</div>
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {galleryData.map((p) => (
@@ -550,11 +556,11 @@ export default function Home() {
 
       <div className="mt-4 flex items-center justify-between">
         <div className="text-muted-foreground text-sm">
-          Page {page} of {totalPages}
+          {tCommon('pageOf', { page, totalPages })}
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <label className="text-muted-foreground text-sm">Rows</label>
+            <label className="text-muted-foreground text-sm">{tCommon('rows')}</label>
             <select
               className="bg-background h-9 rounded-md border px-2 text-sm"
               value={limit}
@@ -606,7 +612,7 @@ export default function Home() {
         }}
       >
         <DialogContent className="rounded-2xl p-8 shadow-xl sm:max-w-[900px] md:max-w-[1100px] lg:max-w-[1200px]">
-          <DialogTitle className="sr-only">Suggest changes</DialogTitle>
+          <DialogTitle className="sr-only">{tDialog('suggestChanges')}</DialogTitle>
 
           {editing && (
             <EditForm
