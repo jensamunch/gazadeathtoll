@@ -1,5 +1,11 @@
 'use client'
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  type MouseEvent as ReactMouseEvent,
+} from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { Input } from '@/components/ui/input'
@@ -39,6 +45,29 @@ export default function Home() {
   const [view, setView] = useState<'list' | 'gallery'>('list')
   const [editing, setEditing] = useState<Person | null>(null)
   const [showSlideshow, setShowSlideshow] = useState(false)
+
+  // Instant, cursor-following tooltip
+  const [tooltip, setTooltip] = useState<{
+    visible: boolean
+    text: string
+    x: number
+    y: number
+  }>({ visible: false, text: '', x: 0, y: 0 })
+
+  const showTooltip = useCallback(
+    (text: string) => (e: ReactMouseEvent) => {
+      setTooltip({ visible: true, text, x: e.clientX, y: e.clientY })
+    },
+    []
+  )
+
+  const moveTooltip = useCallback((e: ReactMouseEvent) => {
+    setTooltip((t) => (t.visible ? { ...t, x: e.clientX, y: e.clientY } : t))
+  }, [])
+
+  const hideTooltip = useCallback(() => {
+    setTooltip((t) => ({ ...t, visible: false }))
+  }, [])
 
   // Filters
   const [nameFilter, setNameFilter] = useState('')
@@ -201,7 +230,7 @@ export default function Home() {
               onClick={() => setShowSlideshow(true)}
               disabled={galleryData.length === 0}
             >
-              Slideshow
+              Rolling
             </Button>
             <Button
               variant="outline"
@@ -228,7 +257,7 @@ export default function Home() {
               />
             </div>
             <div className="mr-2 flex w-full items-center lg:mr-8">
-              <span className="text-muted-foreground text-sm">Age</span>
+              <span className="text-muted-foreground mr-2 text-sm">Age</span>
               <div className="flex w-full items-center gap-2 md:w-auto">
                 <input
                   type="range"
@@ -248,7 +277,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex w-full items-center">
-              <span className="text-muted-foreground text-sm">Category</span>
+              <span className="text-muted-foreground mr-2 text-sm">Category</span>
               <select
                 className="bg-background h-9 w-full rounded-md border px-2 text-sm md:w-[180px]"
                 value={categoryFilter}
@@ -347,7 +376,6 @@ export default function Home() {
                 Source {sortKey === 'source' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </TableHead>
               <TableHead
-                title="Community generated information"
                 onClick={() => toggleSort('dod')}
                 aria-sort={
                   sortKey === 'dod' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
@@ -357,28 +385,31 @@ export default function Home() {
                 <span className="inline-flex items-center gap-1 font-semibold">
                   Date of death {sortKey === 'dod' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
-                    className="text-muted-foreground cursor-help"
-                    title="Community generated information"
-                    aria-label="Community generated information"
+                    className="text-muted-foreground cursor-default"
+                    aria-label="Community submission"
+                    onMouseEnter={showTooltip('Community submission')}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
                   >
                     ⓘ
                   </span>
                 </span>
               </TableHead>
-              <TableHead title="Community generated information">
+              <TableHead>
                 <span className="inline-flex items-center gap-1 font-semibold">
                   Location of death
                   <span
-                    className="text-muted-foreground cursor-help"
-                    title="Community generated information"
-                    aria-label="Community generated information"
+                    className="text-muted-foreground cursor-default"
+                    aria-label="Community submission"
+                    onMouseEnter={showTooltip('Community submission')}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
                   >
                     ⓘ
                   </span>
                 </span>
               </TableHead>
               <TableHead
-                title="Community generated information"
                 onClick={() => toggleSort('category')}
                 aria-sort={
                   sortKey === 'category' ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
@@ -388,21 +419,25 @@ export default function Home() {
                 <span className="inline-flex items-center gap-1 font-semibold">
                   Category {sortKey === 'category' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
                   <span
-                    className="text-muted-foreground cursor-help"
-                    title="Community generated information"
-                    aria-label="Community generated information"
+                    className="text-muted-foreground cursor-default"
+                    aria-label="Community submission"
+                    onMouseEnter={showTooltip('Community submission')}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
                   >
                     ⓘ
                   </span>
                 </span>
               </TableHead>
-              <TableHead title="Community generated information">
+              <TableHead>
                 <span className="inline-flex items-center gap-1 font-semibold">
                   Image
                   <span
-                    className="text-muted-foreground cursor-help"
-                    title="Community generated information"
-                    aria-label="Community generated information"
+                    className="text-muted-foreground cursor-default"
+                    aria-label="Community submission"
+                    onMouseEnter={showTooltip('Community submission')}
+                    onMouseMove={moveTooltip}
+                    onMouseLeave={hideTooltip}
                   >
                     ⓘ
                   </span>
@@ -427,9 +462,11 @@ export default function Home() {
               sortedData.map((p) => (
                 <TableRow
                   key={p.id}
-                  className="tooltip cursor-pointer"
-                  data-tip="Suggest changes"
+                  className="cursor-pointer"
                   onClick={() => setEditing(p)}
+                  onMouseEnter={showTooltip('Submit changes')}
+                  onMouseMove={moveTooltip}
+                  onMouseLeave={hideTooltip}
                 >
                   <TableCell className="font-mono text-xs">{p.id}</TableCell>
                   <TableCell>{p.name}</TableCell>
@@ -592,6 +629,15 @@ export default function Home() {
           squareImageUrlForId={squareImageUrlForId}
           onClose={() => setShowSlideshow(false)}
         />
+      )}
+      {tooltip.visible && (
+        <div
+          className="pointer-events-none fixed z-50 rounded bg-black/80 px-2 py-1 text-xs text-white"
+          style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
+          role="tooltip"
+        >
+          {tooltip.text}
+        </div>
       )}
     </main>
   )
