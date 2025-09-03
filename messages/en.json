@@ -34,7 +34,7 @@
     "categoryHeader": "Category",
     "image": "Image",
     "communitySubmission": "Community submission",
-    "submitChangesTooltip": "Submit changes",
+    "submitChangesTooltip": "Propose changes",
     "dobAndDod": "Date of birth {dob} • Date of death {dod}",
     "all": "All",
     "civilian": "civilian",
@@ -43,7 +43,7 @@
     "other": "other"
   },
   "Dialog": {
-    "suggestChanges": "Suggest changes",
+    "suggestChanges": "Propose changes",
     "unsavedChanges": "You have unsaved changes",
     "edited": "edited",
     "dateOfDeath": "Date of death",
