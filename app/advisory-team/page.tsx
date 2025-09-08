@@ -16,6 +16,18 @@ const people: Person[] = [
     photo: 'wil.jpg',
   },
   {
+    name: 'Heidi El-Hosaini',
+    title: 'Geo data tech & Activism',
+    link: 'https://www.instagram.com/he.idi.eh/?hl=en',
+    photo: 'heidi.jpg',
+  },
+  {
+    name: 'Randa Mirza',
+    title: 'Visual artist',
+    link: 'http://www.randamirza.com/',
+    photo: 'randa.jpg',
+  },
+  {
     name: 'Jens Munch',
     title: 'Strategist & Tech builder',
     link: 'https://www.jensmunch.com/',
@@ -27,23 +39,19 @@ const people: Person[] = [
     link: 'https://www.linkedin.com/in/imransulemanji/',
     photo: 'imran.jpg',
   },
-  {
-    name: 'Joshua Andresen',
-    title: 'International lawyer & Legal academic',
-    link: 'https://www.linkedin.com/in/joshua-andresen-690907262/',
-    photo: 'joshua.jpg',
-  },
+
   {
     name: 'Yousef Eldin',
     title: 'Director of video',
     link: 'http://yousefeldin.com/info/',
     photo: 'yousef.jpg',
   },
+
   {
-    name: 'Heidi El-Hosaini',
-    title: 'Geo data tech & Activism',
-    link: 'https://www.instagram.com/he.idi.eh/?hl=en',
-    photo: 'heidi.jpg',
+    name: 'Joshua Andresen',
+    title: 'International lawyer & Legal academic',
+    link: 'https://www.linkedin.com/in/joshua-andresen-690907262/',
+    photo: 'joshua.jpg',
   },
 ]
 
