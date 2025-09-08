@@ -1,66 +1,13 @@
 'use client'
-import Link from 'next/link'
-import ThemeToggle from './ThemeToggle'
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import Header from './Header'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <main className="px-6 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16 xl:px-24 2xl:px-32">
+        {children}
+      </main>
     </>
-  )
-}
-
-function Header() {
-  const t = useTranslations('Nav')
-  const [locale, setLocale] = useState<'en' | 'ar'>('en')
-
-  useEffect(() => {
-    try {
-      const m = document.cookie.match(/(?:^|; )locale=([^;]+)/)
-      const v = m ? decodeURIComponent(m[1]) : null
-      if (v === 'ar' || v === 'en') setLocale(v)
-    } catch {}
-  }, [])
-
-  const toggleLocale = () => {
-    const next = locale === 'en' ? 'ar' : 'en'
-    setLocale(next)
-    const expires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()
-    document.cookie = `locale=${next}; path=/; expires=${expires}`
-    window.location.reload()
-  }
-  return (
-    <header className="w-full border-b" style={{ borderColor: 'var(--border)' }}>
-      <div className="flex items-center justify-between px-6 py-3">
-        <nav className="flex items-center gap-4">
-          <Link href="/" className="font-semibold">
-            {t('title')}
-          </Link>
-          <Link
-            href="https://leaf-lillipilli-bf8.notion.site/Project-goals-26804e70c61881779d77fe4eb842a01e?source=copy_link"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground text-sm hover:underline"
-          >
-            {t('docs')}
-          </Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <ThemeToggle />
-          <button
-            type="button"
-            onClick={toggleLocale}
-            className="rounded border px-2 py-1 text-xs"
-            style={{ borderColor: 'var(--border)' }}
-            aria-label="Toggle language"
-          >
-            {locale === 'en' ? 'العربية' : 'English'}
-          </button>
-        </div>
-      </div>
-    </header>
   )
 }

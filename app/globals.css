@@ -155,3 +155,59 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Minimal prose styles */
+.prose {
+  color: var(--foreground);
+}
+.prose h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  margin: 1.25rem 0;
+}
+.prose h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+.prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  margin: 0.75rem 0;
+}
+.prose p {
+  margin: 0.75rem 0;
+}
+.prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin: 0.75rem 0;
+}
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin: 0.75rem 0;
+}
+.prose blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: 0.75rem;
+  color: var(--muted-foreground);
+  margin: 0.75rem 0;
+}
+.prose a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1rem 0;
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
