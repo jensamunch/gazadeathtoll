@@ -67,14 +67,14 @@ export default function AdvisoryTeamPage() {
             </div>
             <div className="min-w-0">
               <div className="truncate font-medium">
-                <a
+                <Link
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
                 >
                   {p.name}
-                </a>
+                </Link>
               </div>
               <div className="text-muted-foreground truncate text-sm">{p.title}</div>
             </div>

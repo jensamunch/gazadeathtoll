@@ -1,4 +1,4 @@
-export default async function ProjectGoalsPage() {
+export default function ProjectGoalsPage() {
   return (
     <article className="prose lg:prose-xl">
       <h2 id="introduction">Introduction</h2>
