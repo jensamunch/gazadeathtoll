@@ -40,7 +40,7 @@ function Header() {
             {t('title')}
           </Link>
           <Link
-            href="https://www.notion.so/Online-document-of-Palestinian-deaths-since-Oct-7-2023-25e83c5e0bf3807a82aef13eeb179c0d?source=copy_link"
+            href="https://leaf-lillipilli-bf8.notion.site/Project-goals-26804e70c61881779d77fe4eb842a01e?source=copy_link"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground text-sm hover:underline"
