@@ -29,13 +29,13 @@ export default function Header() {
       <div className="flex items-center justify-between px-3 py-4 md:px-4 md:py-5 lg:px-6">
         <nav className="flex items-center gap-4">
           <Link href="/" className="text-lg font-semibold tracking-tight md:text-xl lg:text-2xl">
-            Palestinian Deaths
+            {t('title')}
           </Link>
           <Link href="/project-goals" className="text-muted-foreground text-sm hover:underline">
-            Project goals
+            {t('docs')}
           </Link>
           <Link href="/advisory-team" className="text-muted-foreground text-sm hover:underline">
-            Advisory team
+            {t('advisoryTeam')}
           </Link>
         </nav>
         <div className="flex items-center gap-2">

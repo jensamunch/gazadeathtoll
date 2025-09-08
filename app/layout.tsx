@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
-import ClientLayout from './_components/ClientLayout'
+import { ThemeProvider } from '../components/theme-provider'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { cookies } from 'next/headers'
-import DirectionWrapper from './_components/DirectionWrapper'
+import DirectionWrapper from '../components/DirectionWrapper'
+import Header from '../components/Header'
 
 export const metadata: Metadata = {
   title: 'Palestinian Deaths since Oct. 7 2023',
@@ -35,7 +35,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               enableSystem
               disableTransitionOnChange
             >
-              <ClientLayout>{children}</ClientLayout>
+              <Header />
+              <main className="px-6 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16 xl:px-24 2xl:px-32">
+                {children}
+              </main>
             </ThemeProvider>
           </DirectionWrapper>
         </NextIntlClientProvider>

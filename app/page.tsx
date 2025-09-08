@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table'
 // import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import Slideshow from './_components/Slideshow'
+import Slideshow from '../components/Slideshow'
 
 type Person = {
   id: string
@@ -652,7 +652,7 @@ export default function Home() {
 }
 // Leaflet map (client-only) for selecting location
 const LeafletMap = dynamic(
-  () => import('./_components/leaflet/LeafletPicker').then((m) => m.LeafletPicker),
+  () => import('../components/leaflet/LeafletPicker').then((m) => m.LeafletPicker),
   { ssr: false }
 )
 

@@ -1,7 +1,8 @@
 {
   "Nav": {
-    "title": "Palestinian Deaths since Oct. 7 2023",
-    "docs": "Project goals"
+    "title": "Palestinian Deaths",
+    "docs": "Project goals",
+    "advisoryTeam": "Advisory team"
   },
   "Common": {
     "loading": "Loading...",
