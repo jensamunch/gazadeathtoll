@@ -138,7 +138,7 @@ export default function ProjectGoalsPage() {
       <p>
         <strong>In more concrete terms, these are the three project goals</strong>
       </p>
-      <ul>
+      <ol>
         <li>
           Increase breadth, accuracy and verifiability of data (to provide a foundation for
           legal/press/political uses)
@@ -170,7 +170,7 @@ export default function ProjectGoalsPage() {
             <li>Notes / Obituaries</li>
           </ul>
         </li>
-      </ul>
+      </ol>
     </article>
   )
 }

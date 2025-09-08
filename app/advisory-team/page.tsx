@@ -25,6 +25,7 @@ const people: Person[] = [
     name: 'Imran Sulemanji',
     title: 'Technical Lead',
     link: 'https://www.linkedin.com/in/imransulemanji/',
+    photo: 'imran.jpg',
   },
   {
     name: 'Joshua Andresen',
@@ -36,11 +37,7 @@ const people: Person[] = [
     name: 'Yousef Eldin',
     title: 'Director of video',
     link: 'http://yousefeldin.com/info/',
-  },
-  {
-    name: 'Randa Mirza',
-    title: 'Photographer',
-    link: 'http://www.randamirza.com/',
+    photo: 'yousef.jpg',
   },
   {
     name: 'Heidi El-Hosaini',
