@@ -1,0 +1,75 @@
+{
+  "metadata": {
+    "title": "ضحايا فلسطين",
+    "description": "سجل وفيات الفلسطينيين في غزة منذ 7 أكتوبر 2023"
+  },
+  "nav": {
+    "title": "ضحايا فلسطين",
+    "docs": "أهداف المشروع",
+    "advisoryTeam": "فريق الاستشارة"
+  },
+  "advisoryTeam": {
+    "title": "فريق الاستشارة",
+    "productLeader": "قائد المنتج",
+    "geoDataTech": "تقنيات البيانات الجغرافية والنشاط",
+    "visualArtist": "فنان بصري",
+    "strategistTechBuilder": "استراتيجي وبناء التقنيات",
+    "technicalLead": "المدير التقني",
+    "directorOfVideo": "مدير الفيديو",
+    "internationalLawyer": "محامي دولي وأكاديمي قانوني"
+  },
+  "home": {
+    "list": "قائمة",
+    "gallery": "معرض",
+    "slideshow": "عرض متدحرج",
+    "filterByName": "البحث بالاسم",
+    "download": "تحميل",
+    "loadedCount": "تم تحميل {count} | المجموع {total}",
+    "age": "العمر",
+    "category": "التصنيف",
+    "maxAgeAria": "الحد الأقصى للعمر",
+    "id": "الرقم التعريفي",
+    "name": "الاسم",
+    "enName": "الاسم بالإنجليزية",
+    "ageHeader": "العمر",
+    "dob": "تاريخ الميلاد",
+    "sex": "الجنس",
+    "source": "المصدر",
+    "dod": "تاريخ الاستشهاد",
+    "locationOfDeath": "مكان الاستشهاد",
+    "categoryHeader": "التصنيف",
+    "image": "الصورة",
+    "communitySubmission": "مساهمة المجتمع",
+    "submitChangesTooltip": "اقتراح تعديلات",
+    "dobAndDod": "تاريخ الميلاد {dob} • تاريخ الاستشهاد {dod}",
+    "all": "الكل",
+    "civilian": "مدني",
+    "medicalStaff": "طاقم طبي",
+    "journalist": "صحفي",
+    "other": "أخرى"
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "noResults": "لا توجد نتائج",
+    "noImagesFound": "لا توجد صور",
+    "rows": "الصفوف",
+    "pageOf": "الصفحة {page} من {totalPages}",
+    "upload": "رفع",
+    "sort": "ترتيب"
+  },
+  "dialog": {
+    "suggestChanges": "اقتراح تعديلات",
+    "unsavedChanges": "لديك تعديلات غير محفوظة",
+    "edited": "تم التعديل",
+    "dateOfDeath": "تاريخ الاستشهاد",
+    "category": "التصنيف",
+    "locationOfDeath": "مكان الاستشهاد",
+    "dragZoom": "اسحب/كبّر الخريطة، ثم انقر لتحديد الموقع",
+    "image": "الصورة",
+    "noImage": "لا توجد صورة",
+    "cancel": "إلغاء",
+    "submit": "اقتراح تعديلات",
+    "submitting": "جارٍ الإرسال...",
+    "idLabel": "الرقم التعريفي: {id}"
+  }
+}

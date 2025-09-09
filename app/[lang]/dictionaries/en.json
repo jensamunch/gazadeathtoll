@@ -1,25 +1,30 @@
 {
-  "Nav": {
+  "metadata": {
+    "title": "Palestinian Deaths",
+    "description": "Record of Palestinian deaths in Gaza since Oct. 7, 2023"
+  },
+  "nav": {
     "title": "Palestinian Deaths",
     "docs": "Project goals",
     "advisoryTeam": "Advisory team"
   },
-  "Common": {
-    "loading": "Loading...",
-    "noResults": "No results",
-    "noImagesFound": "No images found",
-    "rows": "Rows",
-    "pageOf": "Page {page} of {totalPages}",
-    "upload": "Upload",
-    "sort": "Sort"
+  "advisoryTeam": {
+    "title": "Advisory Team",
+    "productLeader": "Product leader",
+    "geoDataTech": "Geo data tech & Activism",
+    "visualArtist": "Visual artist",
+    "strategistTechBuilder": "Strategist & Tech builder",
+    "technicalLead": "Technical Lead",
+    "directorOfVideo": "Director of video",
+    "internationalLawyer": "International lawyer & Legal academic"
   },
-  "Home": {
+  "home": {
     "list": "List",
     "gallery": "Gallery",
     "slideshow": "Rolling",
+    "filterByName": "Filter by name",
     "download": "Download",
     "loadedCount": "Loaded {count} | Total matching {total}",
-    "filterByName": "Filter by name",
     "age": "Age",
     "category": "Category",
     "maxAgeAria": "Maximum age",
@@ -43,7 +48,16 @@
     "journalist": "journalist",
     "other": "other"
   },
-  "Dialog": {
+  "common": {
+    "loading": "Loading...",
+    "noResults": "No results",
+    "noImagesFound": "No images found",
+    "rows": "Rows",
+    "pageOf": "Page {page} of {totalPages}",
+    "upload": "Upload",
+    "sort": "Sort"
+  },
+  "dialog": {
     "suggestChanges": "Propose changes",
     "unsavedChanges": "You have unsaved changes",
     "edited": "edited",

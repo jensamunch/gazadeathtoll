@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { getDictionary } from '../dictionaries'
 
 type Person = {
   name: string
-  title: string
+  titleKey: string
   link: string
   photo?: string // filename in public/team
 }
@@ -11,51 +12,56 @@ type Person = {
 const people: Person[] = [
   {
     name: 'Wil Grace',
-    title: 'Product leader',
+    titleKey: 'productLeader',
     link: 'https://www.linkedin.com/in/wilgrace/',
     photo: 'wil.jpg',
   },
   {
     name: 'Heidi El-Hosaini',
-    title: 'Geo data tech & Activism',
+    titleKey: 'geoDataTech',
     link: 'https://www.instagram.com/he.idi.eh/?hl=en',
     photo: 'heidi.jpg',
   },
   {
     name: 'Randa Mirza',
-    title: 'Visual artist',
+    titleKey: 'visualArtist',
     link: 'http://www.randamirza.com/',
     photo: 'randa.jpg',
   },
   {
     name: 'Jens Munch',
-    title: 'Strategist & Tech builder',
+    titleKey: 'strategistTechBuilder',
     link: 'https://www.jensmunch.com/',
     photo: 'jens.jpg',
   },
   {
     name: 'Imran Sulemanji',
-    title: 'Technical Lead',
+    titleKey: 'technicalLead',
     link: 'https://www.linkedin.com/in/imransulemanji/',
     photo: 'imran.jpg',
   },
-
   {
     name: 'Yousef Eldin',
-    title: 'Director of video',
+    titleKey: 'directorOfVideo',
     link: 'http://yousefeldin.com/info/',
     photo: 'yousef.jpg',
   },
-
   {
     name: 'Joshua Andresen',
-    title: 'International lawyer & Legal academic',
+    titleKey: 'internationalLawyer',
     link: 'https://www.linkedin.com/in/joshua-andresen-690907262/',
     photo: 'joshua.jpg',
   },
 ]
 
-export default function AdvisoryTeamPage() {
+export default async function AdvisoryTeamPage({
+  params,
+}: {
+  params: Promise<{ lang: 'ar' | 'en' }>
+}) {
+  const { lang } = await params
+  const dict = await getDictionary(lang)
+
   return (
     <div className="space-y-6">
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -81,7 +87,9 @@ export default function AdvisoryTeamPage() {
                   {p.name}
                 </Link>
               </div>
-              <div className="text-muted-foreground truncate text-sm">{p.title}</div>
+              <div className="text-muted-foreground truncate text-sm">
+                {dict.advisoryTeam[p.titleKey as keyof typeof dict.advisoryTeam]}
+              </div>
             </div>
           </li>
         ))}

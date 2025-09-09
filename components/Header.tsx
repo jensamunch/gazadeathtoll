@@ -1,41 +1,66 @@
 'use client'
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
-import { useTranslations } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-export default function Header() {
-  const t = useTranslations('Nav')
-  const [locale, setLocale] = useState<'en' | 'ar'>('en')
+// Import dictionaries directly as JSON (not server-only)
+import enDict from '../app/[lang]/dictionaries/en.json'
+import arDict from '../app/[lang]/dictionaries/ar.json'
 
+export default function Header() {
+  const pathname = usePathname()
+  const [locale, setLocale] = useState<'en' | 'ar'>('ar')
+
+  // Determine current locale from pathname
   useEffect(() => {
-    try {
-      const m = document.cookie.match(/(?:^|; )locale=([^;]+)/)
-      const v = m ? decodeURIComponent(m[1]) : null
-      if (v === 'ar' || v === 'en') setLocale(v)
-    } catch {}
-  }, [])
+    if (pathname.startsWith('/en')) {
+      setLocale('en')
+    } else {
+      setLocale('ar')
+    }
+  }, [pathname])
 
   const toggleLocale = () => {
-    const next = locale === 'en' ? 'ar' : 'en'
-    setLocale(next)
-    const expires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()
-    document.cookie = `locale=${next}; path=/; expires=${expires}`
-    window.location.reload()
+    const currentIsEn = pathname.startsWith('/en')
+
+    if (currentIsEn) {
+      // Switch to Arabic (remove /en prefix)
+      const newPath = pathname.replace(/^\/en/, '') || '/'
+      window.location.href = newPath
+    } else {
+      // Switch to English (add /en prefix)
+      const newPath = `/en${pathname}`
+      window.location.href = newPath
+    }
   }
+
+  // Get translations from dictionary files
+  const dict = locale === 'en' ? enDict : arDict
+  const t = dict.nav
+  const basePath = locale === 'en' ? '/en' : ''
 
   return (
     <header className="w-full border-b" style={{ borderColor: 'var(--border)' }}>
       <div className="flex items-center justify-between px-3 py-4 md:px-4 md:py-5 lg:px-6">
         <nav className="flex items-center gap-4">
-          <Link href="/" className="text-lg font-semibold tracking-tight md:text-xl lg:text-2xl">
-            {t('title')}
+          <Link
+            href={`${basePath}/`}
+            className="text-lg font-semibold tracking-tight md:text-xl lg:text-2xl"
+          >
+            {t.title}
           </Link>
-          <Link href="/project-goals" className="text-muted-foreground text-sm hover:underline">
-            {t('docs')}
+          <Link
+            href={`${basePath}/project-goals`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.docs}
           </Link>
-          <Link href="/advisory-team" className="text-muted-foreground text-sm hover:underline">
-            {t('advisoryTeam')}
+          <Link
+            href={`${basePath}/advisory-team`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.advisoryTeam}
           </Link>
         </nav>
         <div className="flex items-center gap-2">

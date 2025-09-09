@@ -1,0 +1,73 @@
+## Introduction
+
+It is critically important to document the suffering inflicted on the Palestinian population since Oct. 7, 2023. Specifically it is important to document the civilians who have died as a consequence of direct military action by Israel.
+
+> "Remembering is an ethical act, has ethical value in and of itself. Memory is, achingly, the only relation we can have with the dead.” Susan Sontag, Regarding the pain of others
+
+Today the data available on the 62,000+ civilians killed come from the Gaza Ministry of Health, and are made available by organisations such as [Tech4Palestine](https://data.techforpalestine.org/), [Iraq Body Count](https://www.iraqbodycount.org/) and [Shireen](https://www.shireen.ps/data-sources). The data contains Name, ID, DOB, Gender, and age.
+
+This project proposes to turn this data into a canonical online document with three goals:
+
+1. Address criticism of the underlying by improving tracking and verifiability
+2. Add important data fields and enable contributions from the community
+3. Enable easier interaction with the data for more wide spread use and impact
+
+> "Each of these individuals is more than just a number; each one carries a unique story, a profound tragedy, a home filled with memories, and a family left grieving — don’t they deserve to be remembered?” - Gaza Ministry of Health
+
+Technical prototype (for illustration purposes only): [https://palestiniandeaths.vercel.app/](https://palestiniandeaths.vercel.app/)
+
+## Background (mostly quoted from [here](https://dataactivists.org/estimating_death_toll_of_war_on_gaza/))
+
+As of 30 July 2025, 62,122 Palestinians have been reported killed in the Gaza war according to the Gaza Health Ministry (GHM). The GHM total casualty count is the number of deaths directly caused by the war. The GHM count does not include those who have died from "preventable disease, malnutrition and other consequences of the war".
+
+The methodology adopted by the MoH and the GMO consists in only counting the deaths that meet both of the following criteria:
+
+- people killed by direct military action (bombing, gunshot, etc.)
+- bodies that reach healthcare facilities and are officially documented
+
+The people whose bodies are under rubble (estimated at [**>10.000**](https://www.dropsitenews.com/p/how-gaza-health-ministry-counts-dead)) or who die from the indirect effects of war (starvation, illness) are not included in these figures (though the MoH does have enough historical data to estimate those numbers).
+
+Several [**independent analyses from the UN, WHO, researchers**](https://www.ochaopt.org/content/reported-impact-snapshot-gaza-strip-19-june-2024), and the [**IDF**](https://www.vice.com/en/article/y3w4w7/israeli-intelligence-health-ministry-death-toll) have confirmed that the data is accurate. Both the cumulative counts and the casualty reports of Israel’s daily attacks come from the MoH: these are the figures widely reported, and often dismissed, by media and politicians.
+
+The MoH cites two primary reasons for their methodology:
+
+- To preempt accusations of overestimating the death toll: “_counter the narrative of the occupation that we are exaggerating and that all those killed are combatants_”
+- To protect the dignity of those killed in the war: “_Each of these individuals is more than just a number; each one carries a unique story, a profound tragedy, a home filled with memories, and a family left grieving — don’t they deserve to be remembered?_”
+
+The dataset from GHM have been provided as PDF files in multiple instalments. An organisation called Tech4Palestine (see below), have cleaned and structured these files and make them available as JSON and CSV files, and also through a paginated API.
+
+The data GHM contains the following dimensions:
+
+- Name
+- Date of birth
+- ID number
+- Age
+- Gender
+- (Tech4Palestine have added an English transliteration of the name)
+
+This data along with daily totals and some other data specific to press killed, buildings destroyed are made available here: [https://data.techforpalestine.org/docs/killed-in-gaza/](https://data.techforpalestine.org/docs/killed-in-gaza/)
+
+## Project goal
+
+Documenting the terrible suffering inflicted on the Palestinian population since Oct. 7, 2023 has intrinsic value as well as direct utility. This project has as its mission to build on the current data by GHM and Tech4Palestine to create the most comprehensive and authoritative online document of civilian deaths in Palestine in this timeframe.
+
+There are two foundational over-arching goal behind these concrete project goals which is to
+
+- Honour, and remember, those who have died
+- Give their family ownership over their digital record
+
+**In more concrete terms, these are the three project goals**
+
+1. Increase breadth, accuracy and verifiability of data (to provide a foundation for legal/press/political uses)
+   1. Add data challenges, flagging, controls for GHM data and enable action (Layer 1 data)
+   2. Enable community submission for additional data points (Layer 2 data)
+   3. Editorial access and oversight to verify and monitor community submissions (Layer 2 data)
+2. Enable easier interaction with the data to increase usage
+   - Use-cases: journalism, legal, advocacy, activism, political
+   - Tech capabilities: Filtering / sorting / downloading in an online web-app
+3. Augment data with submissions by the community e.g.
+   1. Date of death
+   2. Location of death
+   3. Category (e.g. press, medical staff, academic)
+   4. Photos
+   5. Notes / Obituaries

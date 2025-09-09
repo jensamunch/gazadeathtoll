@@ -7,8 +7,8 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table'
 // import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import Slideshow from '../components/Slideshow'
+import Slideshow from '@/components/Slideshow'
 
 type Person = {
   id: string
@@ -34,9 +34,42 @@ type Person = {
   createdAt: string
 }
 
-// Labels inlined in JSX; no translation object.
+type Dictionary = {
+  metadata: {
+    title: string
+    description: string
+  }
+  nav: {
+    title: string
+    docs: string
+    advisoryTeam: string
+  }
+  advisoryTeam: {
+    title: string
+    productLeader: string
+    geoDataTech: string
+    visualArtist: string
+    strategistTechBuilder: string
+    technicalLead: string
+    directorOfVideo: string
+    internationalLawyer: string
+  }
+  home: {
+    [key: string]: string
+  }
+  common: {
+    [key: string]: string
+  }
+  dialog: {
+    [key: string]: string
+  }
+}
 
-export default function Home() {
+type HomeProps = {
+  dict: Dictionary
+}
+
+export default function HomeClient({ dict }: HomeProps) {
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<Person[]>([])
   const [total, setTotal] = useState(0)
@@ -46,9 +79,36 @@ export default function Home() {
   const [view, setView] = useState<'list' | 'gallery'>('list')
   const [editing, setEditing] = useState<Person | null>(null)
   const [showSlideshow, setShowSlideshow] = useState(false)
-  const t = useTranslations('Home')
-  const tCommon = useTranslations('Common')
-  const tDialog = useTranslations('Dialog')
+  // Use dictionary-based translations with interpolation support
+  const t = (key: string, params?: Record<string, string | number>) => {
+    let text = dict.home[key as keyof typeof dict.home] || key
+    if (params && typeof text === 'string') {
+      Object.entries(params).forEach(([k, v]) => {
+        text = (text as string).replace(`{${k}}`, String(v))
+      })
+    }
+    return text
+  }
+
+  const tCommon = (key: string, params?: Record<string, string | number>) => {
+    let text = dict.common[key as keyof typeof dict.common] || key
+    if (params && typeof text === 'string') {
+      Object.entries(params).forEach(([k, v]) => {
+        text = (text as string).replace(`{${k}}`, String(v))
+      })
+    }
+    return text
+  }
+
+  const tDialog = (key: string, params?: Record<string, string | number>) => {
+    let text = dict.dialog[key as keyof typeof dict.dialog] || key
+    if (params && typeof text === 'string') {
+      Object.entries(params).forEach(([k, v]) => {
+        text = (text as string).replace(`{${k}}`, String(v))
+      })
+    }
+    return text
+  }
 
   // Instant, cursor-following tooltip
   const [tooltip, setTooltip] = useState<{
@@ -505,7 +565,7 @@ export default function Home() {
                         />
                       ) : (
                         <Button asChild variant="outline" size="sm">
-                          <a href="/admin">{tCommon('upload')}</a>
+                          <Link href="/admin">{tCommon('upload')}</Link>
                         </Button>
                       )}
                     </div>
@@ -652,7 +712,7 @@ export default function Home() {
 }
 // Leaflet map (client-only) for selecting location
 const LeafletMap = dynamic(
-  () => import('../components/leaflet/LeafletPicker').then((m) => m.LeafletPicker),
+  () => import('@/components/leaflet/LeafletPicker').then((m) => m.LeafletPicker),
   { ssr: false }
 )
 
