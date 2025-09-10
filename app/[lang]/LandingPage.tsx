@@ -3,16 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  ArrowRight,
-  Database,
-  Users,
-  Shield,
-  Globe,
-  Heart,
-  FileText,
-  BarChart3,
-} from 'lucide-react'
+import { ArrowRight, Database, Users, Heart } from 'lucide-react'
 
 type Dictionary = {
   metadata: {
@@ -33,21 +24,6 @@ type Dictionary = {
       cta: string
       secondaryCta: string
     }
-    stats: {
-      title: string
-      totalDeaths: string
-      lastUpdated: string
-      dataPoints: string
-    }
-    features: {
-      title: string
-      subtitle: string
-      items: Array<{
-        title: string
-        description: string
-        icon: string
-      }>
-    }
     mission: {
       title: string
       description: string
@@ -62,6 +38,13 @@ type Dictionary = {
       primaryButton: string
       secondaryButton: string
     }
+  }
+  faq: {
+    title: string
+    questions: Array<{
+      question: string
+      answer: string
+    }>
   }
 }
 
@@ -93,70 +76,9 @@ export default function LandingPage({ dict, locale }: LandingPageProps) {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg">
-                <Link href={`${basePath}/project-goals`}>{t.hero.secondaryCta}</Link>
+                <Link href={`${basePath}/about`}>{t.hero.secondaryCta}</Link>
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="bg-muted/30 px-6 py-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold">{t.stats.title}</h2>
-          </div>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="text-destructive mb-2 text-4xl font-bold">30,000+</div>
-                <p className="text-muted-foreground">{t.stats.totalDeaths}</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="text-primary mb-2 text-4xl font-bold">100%</div>
-                <p className="text-muted-foreground">{t.stats.lastUpdated}</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="mb-2 text-4xl font-bold text-green-600 dark:text-green-400">
-                  50+
-                </div>
-                <p className="text-muted-foreground">{t.stats.dataPoints}</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl font-bold">{t.features.title}</h2>
-            <p className="text-muted-foreground mt-4 text-lg">{t.features.subtitle}</p>
-          </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {t.features.items.map((feature, index) => {
-              const IconComponent = getIconComponent(feature.icon)
-              return (
-                <Card key={index} className="transition-shadow hover:shadow-lg">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary/10 rounded-lg p-2">
-                        <IconComponent className="text-primary h-6 w-6" />
-                      </div>
-                      <CardTitle className="text-lg">{feature.title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base">{feature.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              )
-            })}
           </div>
         </div>
       </section>
@@ -201,7 +123,7 @@ export default function LandingPage({ dict, locale }: LandingPageProps) {
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg">
-              <Link href={`${basePath}/advisory-team`}>
+              <Link href={`${basePath}/about`}>
                 {t.cta.secondaryButton}
                 <Users className="ml-2 h-5 w-5" />
               </Link>
@@ -209,19 +131,25 @@ export default function LandingPage({ dict, locale }: LandingPageProps) {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="bg-muted/30 px-6 py-20">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="mb-8 text-center text-3xl font-bold">{dict.faq.title}</h2>
+          <div className="space-y-4">
+            {dict.faq.questions.map((item, index) => (
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="text-left text-lg">{item.question}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{item.answer}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   )
-}
-
-// Helper function to get icon components
-function getIconComponent(iconName: string) {
-  const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-    database: Database,
-    users: Users,
-    shield: Shield,
-    globe: Globe,
-    fileText: FileText,
-    barChart: BarChart3,
-  }
-  return icons[iconName] || Database
 }

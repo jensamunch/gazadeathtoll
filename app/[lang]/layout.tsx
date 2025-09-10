@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
 import '@/app/globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -44,26 +43,12 @@ export default async function LocaleLayout({
 
   return (
     <html dir={dir} lang={lang} suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(() => { try { const ls = localStorage.getItem('theme'); const dark = ls ? ls === 'dark' : false; const root = document.documentElement; if (dark) root.classList.add('dark'); else root.classList.remove('dark'); } catch (e) {} })();`,
-          }}
-        />
-      </head>
       <body className="min-h-screen">
         <DirectionWrapper dir={dir}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            <main className="px-6 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16 xl:px-24 2xl:px-32">
-              {children}
-            </main>
-          </ThemeProvider>
+          <Header />
+          <main className="px-6 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16 xl:px-24 2xl:px-32">
+            {children}
+          </main>
         </DirectionWrapper>
         <Analytics />
         <SpeedInsights />
