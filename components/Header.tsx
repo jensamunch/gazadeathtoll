@@ -62,6 +62,9 @@ export default function Header() {
           >
             {t.advisoryTeam}
           </Link>
+          <Link href={`${basePath}/faq`} className="text-muted-foreground text-sm hover:underline">
+            {t.faq}
+          </Link>
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />

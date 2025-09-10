@@ -1,12 +1,13 @@
 {
   "metadata": {
-    "title": "Palestinian Deaths",
+    "title": "Gaza Death Toll",
     "description": "Record of Palestinian deaths in Gaza since Oct. 7, 2023"
   },
   "nav": {
-    "title": "Palestinian Deaths",
+    "title": "Gaza Death Toll",
     "docs": "Project goals",
-    "advisoryTeam": "Advisory team"
+    "advisoryTeam": "Advisory team",
+    "faq": "FAQ"
   },
   "advisoryTeam": {
     "title": "Advisory Team",
@@ -39,7 +40,7 @@
     "locationOfDeath": "Location of death",
     "categoryHeader": "Category",
     "image": "Image",
-    "communitySubmission": "Community submission",
+    "communitySubmission": "Mock data - Community contribution",
     "submitChangesTooltip": "Propose changes",
     "dobAndDod": "Date of birth {dob} • Date of death {dod}",
     "all": "All",
@@ -68,8 +69,41 @@
     "image": "Image",
     "noImage": "No image",
     "cancel": "Cancel",
-    "submit": "Suggest changes",
+    "submit": "Propose changes",
     "submitting": "Submitting…",
     "idLabel": "ID: {id}"
+  },
+  "faq": {
+    "title": "FAQ",
+    "questions": [
+      {
+        "question": "Words matter. Why do you refer to deaths?",
+        "answer": "Palestinians use the Arabic word 'shahid' from the Arabic root sh-h-d, meaning \"to witness,\" \"to be present,\" or \"to testify\". In Islam, shahid refers to someone who dies while defending their faith, family, or community in battle, or for other religious causes. Casualty of war is an English euphemism, glossing over the topic of responsibility and asymmetry. Murder requires a specific intent which is missing in systemic and cultural genocide. We chose deaths as a neutral and specific word to not detract from the objectivity of the data."
+      },
+      {
+        "question": "Who is involved in this project?",
+        "answer": "An informal advisory team (see page) has been formed that is establishing a charity in the UK that will hold all of the data and assets. This group will also establish Memorandum and Articles of Association, Code of Conduct, and Editorial Principles."
+      },
+      {
+        "question": "Who owns the data and how can it be used?",
+        "answer": "All of the data will be made available to the public as exported bulk files. The data and the technology platform will be covered by Open source and Open data licensing."
+      },
+      {
+        "question": "How is this project funded?",
+        "answer": "Already confirmed are sufficient to enable this project to reach its first milestone. From that point onwards it will require fundraising for its ongoing expenses (primarily technology infrastructure)."
+      },
+      {
+        "question": "What is your relationship to Iraq Body Count and Tech4Palestine?",
+        "answer": "Iraq Body Count has been doing the highly important work of documenting, and quantifying, human suffering from war since 2002. They have written extensively about their process on their substack and x accounts. Our ambition is to extend their work by enabling community engagement with the official data."
+      },
+      {
+        "question": "What is your relationship to Tech4Palestine?",
+        "answer": "Tech4Palestine is a movement and a community. Their impact is powerful and if you are in the technology sector, or associated industry, you should look to participate in their work. We are applying to be part of their incubator to stay close to their ecosystem."
+      },
+      {
+        "question": "What is your relationship to the Gaza Ministry of Health?",
+        "answer": "Understandably, the Gaza MoH is very stretched currently and are providing their updates on deaths in their Telegram channel through PDFs. We will engage with them in every way we can, and provide them with assistance in the generation of their future data updates but today have no partnership or open channel with them."
+      }
+    ]
   }
 }

@@ -886,7 +886,7 @@ function EditForm({
           Cancel
         </Button>
         <Button onClick={save} disabled={saving} className="h-11 px-6">
-          {saving ? 'Submitting…' : 'Suggest changes'}
+          {saving ? 'Submitting…' : 'Propose changes'}
         </Button>
       </div>
     </div>
