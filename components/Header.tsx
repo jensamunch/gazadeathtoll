@@ -57,6 +57,12 @@ export default function Header() {
             {t.docs}
           </Link>
           <Link
+            href={`${basePath}/database`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.database}
+          </Link>
+          <Link
             href={`${basePath}/advisory-team`}
             className="text-muted-foreground text-sm hover:underline"
           >

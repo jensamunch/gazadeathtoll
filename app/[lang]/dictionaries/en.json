@@ -7,7 +7,8 @@
     "title": "Gaza Death Toll",
     "docs": "Project goals",
     "advisoryTeam": "Advisory team",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "database": "Database"
   },
   "advisoryTeam": {
     "title": "Advisory Team",
@@ -72,6 +73,85 @@
     "submit": "Propose changes",
     "submitting": "Submitting…",
     "idLabel": "ID: {id}"
+  },
+  "landing": {
+    "hero": {
+      "title": "Documenting Every Life Lost",
+      "subtitle": "A comprehensive database of Palestinian deaths in Gaza since October 7, 2023",
+      "description": "We believe every life matters. This platform provides transparent, community-verified data to ensure no death goes unnoticed or forgotten.",
+      "cta": "Explore the Database",
+      "secondaryCta": "Learn More"
+    },
+    "stats": {
+      "title": "The Numbers Tell a Story",
+      "totalDeaths": "Total Deaths Recorded",
+      "lastUpdated": "Community Verified",
+      "dataPoints": "Data Points Collected"
+    },
+    "features": {
+      "title": "Why This Matters",
+      "subtitle": "Transparent documentation for accountability and remembrance",
+      "items": [
+        {
+          "title": "Community Verified",
+          "description": "Every entry is verified by community members to ensure accuracy and completeness.",
+          "icon": "users"
+        },
+        {
+          "title": "Transparent Data",
+          "description": "All data is publicly available and can be downloaded for independent analysis.",
+          "icon": "database"
+        },
+        {
+          "title": "Open Source",
+          "description": "Built with open source technology to ensure transparency and community participation.",
+          "icon": "globe"
+        },
+        {
+          "title": "Comprehensive Records",
+          "description": "Detailed information including names, ages, locations, and circumstances of death.",
+          "icon": "fileText"
+        },
+        {
+          "title": "Visual Documentation",
+          "description": "Photos and visual records to humanize the statistics and preserve memories.",
+          "icon": "shield"
+        },
+        {
+          "title": "Data Analysis",
+          "description": "Tools and visualizations to understand patterns and trends in the data.",
+          "icon": "barChart"
+        }
+      ]
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "We are committed to documenting every Palestinian life lost in Gaza with dignity, accuracy, and transparency. Our work ensures that these lives are not reduced to mere statistics but are remembered as individuals with names, families, and stories.",
+      "principles": [
+        {
+          "title": "Dignity in Documentation",
+          "description": "Every entry honors the individual's life and respects their memory with complete and accurate information."
+        },
+        {
+          "title": "Community Driven",
+          "description": "The platform is built by and for the community, ensuring local knowledge and verification of all data."
+        },
+        {
+          "title": "Transparency & Accountability",
+          "description": "All data sources, methodologies, and processes are transparent and open to public scrutiny."
+        },
+        {
+          "title": "Preservation of Truth",
+          "description": "We document facts as they are, without political bias, to preserve historical truth for future generations."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Join Us in This Important Work",
+      "description": "Help us ensure every life is documented and remembered. Explore the database, contribute to verification, or support our mission.",
+      "primaryButton": "View Database",
+      "secondaryButton": "Meet the Team"
+    }
   },
   "faq": {
     "title": "FAQ",
