@@ -1,4 +1,6 @@
-# 1. Evaluation
+import ProseImage from '@/components/ProseImage'
+
+# Evaluation
 
 - Establish advisory board with a strong and diverse Palestinian voice
 - Build clear product plan for Phase 1 and Phase 2 of project
@@ -7,14 +9,14 @@
 - Summarise feedback into Project Evaluation Memorandum
 - Clear decision point by Advisory team on whether this project goes ahead
 
-# 2. Organisational
+# Organisational
 
 - Establish a Charitable Incorporated Organisation (UK) or equivalent
 - Advisory Board to affirm Constitution for CIO (dictates oversight and management)
 - Establish appropriate licenses for code and data (to ensure community ownership)
 - Establish Code of Conduct and cultural document
 
-# 3. Building the platform
+# Phase 1 - Foundations
 
 ### Definitions
 
@@ -22,60 +24,65 @@
    Members of the public, including journalists or researchers looking for a trusted source of data. Others will visit to understand the scale of suffering. Most will arrive from social media.
 2. **Users**
    Signs up for an account, allowing them to flag duplicates & errors, or augment existing data with personal details (eg. photos, date of death). Most will be friends or family of deceased.
-3. **Editors / Moderators**
+3. **Moderators**
    Highly trusted small community (fewer than 20) who volunteer to review and approve contributions from Users. Their decisions are taken according to clearly defined policies.
 4. **Administrator**
    Uploads bulk data from Gaza Ministry of Health. Approve Editors and handle escalations.
 
-### Success metrics
+### Objectives
 
-- Unique weekly visitors
-- Community data contributions
+1. Enhance the [Palestine Dataset](https://data.techforpalestine.org/docs/datasets/) with cumulative version history of MoH updates, allowing changes to be tracked over time.
+2. Establish the core platform and governance model.
+3. Communicate goals with Palestinian networks and potential moderators
 
-## 3.1 Building - Phase 1
+### Key Features
 
-**Objective**
+- Open source web app (responsive, secure, hosted on ethical tech).
+-  Language support: geolocated default, Arabic/English switch.
 
-1. Augment [Palestine Dataset](https://data.techforpalestine.org/docs/datasets/) by adding cumulative version history to MoH updates - eg. if a record is new, modified or deleted. In the absence of date of death, the date between a records first entry vs the previous version provides a window of time for date of death.
+### Visitor functionality
+    - Total deaths and breakdown statistics.
+    - Table of records with filters, including MoH version/date.
+    - Individual record pages with MoH data + version history (proxy for date of death).
 
-**Foundations**
+<ProseImage src="/roadmap/details.png" alt="Initial database view" caption="Initial database view" bleed="lg" />
 
-- Open source responsive web app hosted on secure, conscientious tech
-- Geolocated language default, with language switch (Arabic/English initially)
-- English language codebase and database records
+### Admin functionality
+    - MoH data upload & difference resolution (create/update/delete).
+    - Version history of uploads (with name, date, notes).
+    - User & API management (internal + external use).
 
-**Admin functionality**
+<ProseImage src="/roadmap/data.png" alt="Admin data management tools" caption="Admin data management tools" bleed="lg" />
 
-- Authentication for admin
-- MoH data management
-  - Sequentially upload as bulk files every MoH data release
-    - Labelling and dating the bulk upload
-  - Resolve difference - create/update/delete
-  - Version history of changes (new, edited, deleted)
-  - Delete previous bulk file uploads (in case of error)
+# Phase 2 - Contributions
 
-**Visitor functionality**
+### Objectives
 
-- Export full or filtered data as CSV or JSON
-- Filter by age and gender
-- Filter by bulk file attributes:
-  - First created (which release was this death first part of)
-  - Last update (has this record been edited)
-    - MoH edited (ie. parts of record changed in subsequent bulk files)
-    - MoH deleted (ie. record deleted in subsequent bulk files)
-- Viewing individual record with all available data and every version of this record (and time of edit)
+1. Enable users to contribute personal details that humanise MoH records.
+2. Build a network to moderate contributions.
+3. Share verified corrections back to MoH to strengthen the source dataset.
 
-## 3.1 Building - Phase 2
+### User functionality
+    - Visitors can sign up.
+    - Users can flag duplicates/inaccuracies or add details (photos, biography, circumstances).
+    - All contributions logged in record history.
 
-**User functionality**
+<ProseImage src="/roadmap/contribute.png" alt="Contribute" caption="Contribution flow" bleed="lg" />
 
-- Visitors can sign up as Users
-- Users can flag a record (duplicate or inaccurate) or add personal details (eg. images, details of death, where they lived)
+### Moderator functionality
+    - Admins invite moderators
+    - Moderators manage a prioritised inbox of flags & contributions (accept/decline/escalate).
+    - Full audit trail of decisions (user, editor, date, notes).
 
-**Moderator functionality**
+<ProseImage src="/roadmap/inbox.png" alt="Inbox" caption="Moderator inbox" bleed="lg" />
 
-- Admin invite Editors to the platform
-- Editors manage an inbox of prioritised contributions
-  - Contributions are resolved with accept / decline / escalate
-  - Every version of a record contains the details of contributions and resolution details (eg. user, editor, date, notes)
-  - This enables full transparency and tracking of community contributions and moderator decisions
+### Admin functionality
+    - Deliver corrections back to MoH.
+    - Track discrepancies across imports.
+
+### Metrics
+- Visitor traffic
+- Time on site
+- Contribution volume
+
+

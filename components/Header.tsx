@@ -41,7 +41,7 @@ export default function Header() {
   const basePath = locale === 'en' ? '/en' : ''
 
   return (
-    <header className="w-full border-b" style={{ borderColor: 'var(--border)' }}>
+    <header className="w-full border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" style={{ borderColor: 'var(--border)' }}>
       <div className="flex items-center justify-between px-3 py-4 md:px-4 md:py-5 lg:px-6">
         <nav className="flex items-center gap-4">
           <Link href={`${basePath}/`} className="text-muted-foreground text-sm hover:underline">
