@@ -80,7 +80,7 @@ export default async function AboutPage({ params }: Props) {
   const dict = await getDictionary(lang)
 
   return (
-    <div className="space-y-12">
+    <div className="mx-auto max-w-2xl space-y-12">
       <article className="prose lg:prose-xl">
         <MDXWrapper lang={lang} />
       </article>

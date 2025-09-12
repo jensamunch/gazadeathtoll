@@ -1,5 +1,7 @@
 {
-  "name": "clerk-prisma-aggrid",
+  "name": "gazadeaths",
+  "description": "A project tracking Palestinian deaths in Gaza",
+  "license": "MIT",
   "version": "0.1.0",
   "private": true,
   "scripts": {

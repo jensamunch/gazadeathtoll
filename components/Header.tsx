@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Github } from 'lucide-react'
 
 // Import dictionaries directly as JSON (not server-only)
 import enDict from '../app/[lang]/dictionaries/en.json'
@@ -53,6 +54,12 @@ export default function Header() {
             {t.docs}
           </Link>
           <Link
+            href={`${basePath}/roadmap`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.roadmap}
+          </Link>
+          <Link
             href={`${basePath}/database`}
             className="text-muted-foreground text-sm hover:underline"
           >
@@ -60,6 +67,15 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/jensamunch/gazadeaths"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground p-2 transition-colors"
+            aria-label="View source code on GitHub"
+          >
+            <Github size={20} />
+          </a>
           <button
             type="button"
             onClick={toggleLocale}
