@@ -16,20 +16,23 @@
   },
   "advisoryTeam": {
     "title": "Advisory Team",
+    "subtitle": "A team of experts and specialists committed to documenting and preserving the memory of every life lost",
+    "dimaHamdan": "Journalist and filmmaker",
+    "dimaHamdanDesc": "Manager of the Marie Colvin Journalists’ Network (MCJN) | Media Trainer & Consultant",
     "productLeader": "Product leader",
-    "productLeaderDesc": "Leading product strategy and user experience design for humanitarian data platforms.",
-    "geoDataTech": "Geo data tech & Activism",
-    "geoDataTechDesc": "Specializing in geospatial data analysis and digital activism for Palestinian rights.",
+    "productLeaderDesc": "20 years of experience in product design and 8 years as a founder of UK tech startup",
+    "geoDataTech": "Geo data & Activism",
+    "geoDataTechDesc": "Open-source GIS for NGOs, humanitarian meets tech, making data fun & interactive",
     "visualArtist": "Visual artist",
-    "visualArtistDesc": "Creating powerful visual narratives that humanize statistics and preserve memories.",
-    "strategistTechBuilder": "Strategist & Tech builder",
-    "strategistTechBuilderDesc": "Building technology solutions that serve humanitarian causes and social justice.",
+    "visualArtistDesc": "Artist foocused on feminist work through photography, video, installation, and performance",
+    "strategistTechBuilder": "Entrepreneur & Builder",
+    "strategistTechBuilderDesc": "Building technology solutions that serve humanitarian causes and social justice",
     "technicalLead": "Technical Lead",
-    "technicalLeadDesc": "Architecting scalable systems for data integrity and community-driven verification.",
+    "technicalLeadDesc": "From product to execution. Full-Stack Engineer, Technical Lead, Scalable Systems Architect",
     "directorOfVideo": "Director of video",
-    "directorOfVideoDesc": "Documenting stories through film to amplify voices and preserve historical truth.",
+    "directorOfVideoDesc": "Award winning director.He has shot for e.g. Guardian, BBC, Monocle, WIRED, and Vice",
     "internationalLawyer": "International lawyer & Legal academic",
-    "internationalLawyerDesc": "Ensuring legal compliance and advocating for accountability in documentation efforts."
+    "internationalLawyerDesc": "International lawyer with expertise in law of armed conflict and international human rights"
   },
   "home": {
     "list": "List",
@@ -169,7 +172,7 @@
     "questions": [
       {
         "question": "Words matter. Why do you refer to deaths?",
-        "answer": "Palestinians use the Arabic word 'shahid' from the Arabic root sh-h-d, meaning \"to witness,\" \"to be present,\" or \"to testify\". In Islam, shahid refers to someone who dies while defending their faith, family, or community in battle, or for other religious causes. Casualty of war is an English euphemism, glossing over the topic of responsibility and asymmetry. Murder requires a specific intent which is missing in systemic and cultural genocide. We chose deaths as a neutral and specific word to not detract from the objectivity of the data."
+        "answer": "Casualty is a euphemism, murder requires individual intent, shahid possibly excludes those who don't subscribe to religious purpose. We chose deaths as a neutral and specific word to not detract from the objectivity of the data."
       },
       {
         "question": "Who is involved in this project?",

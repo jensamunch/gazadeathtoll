@@ -2,7 +2,12 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { getDictionary } from '../dictionaries'
 
 type Person = {
@@ -14,16 +19,16 @@ type Person = {
 
 const people: Person[] = [
   {
-    name: 'Wil Grace',
-    titleKey: 'productLeader',
-    link: 'https://www.linkedin.com/in/wilgrace/',
-    photo: 'wil.jpg',
+    name: 'Dima Hamdan',
+    titleKey: 'dimaHamdan',
+    link: 'https://www.linkedin.com/in/dima-hamdan-9654b53/',
+    photo: 'dima.jpg',
   },
   {
-    name: 'Heidi El-Hosaini',
-    titleKey: 'geoDataTech',
-    link: 'https://www.instagram.com/he.idi.eh/?hl=en',
-    photo: 'heidi.jpg',
+    name: 'Joshua Andresen',
+    titleKey: 'internationalLawyer',
+    link: 'https://www.linkedin.com/in/joshua-andresen-690907262/',
+    photo: 'joshua.jpg',
   },
   {
     name: 'Randa Mirza',
@@ -38,6 +43,19 @@ const people: Person[] = [
     photo: 'jens.jpg',
   },
   {
+    name: 'Wil Grace',
+    titleKey: 'productLeader',
+    link: 'https://www.linkedin.com/in/wilgrace/',
+    photo: 'wil.jpg',
+  },
+  {
+    name: 'Heidi El-Hosaini',
+    titleKey: 'geoDataTech',
+    link: 'https://www.instagram.com/he.idi.eh/?hl=en',
+    photo: 'heidi.jpg',
+  },
+
+  {
     name: 'Imran Sulemanji',
     titleKey: 'technicalLead',
     link: 'https://www.linkedin.com/in/imransulemanji/',
@@ -48,12 +66,6 @@ const people: Person[] = [
     titleKey: 'directorOfVideo',
     link: 'http://yousefeldin.com/info/',
     photo: 'yousef.jpg',
-  },
-  {
-    name: 'Joshua Andresen',
-    titleKey: 'internationalLawyer',
-    link: 'https://www.linkedin.com/in/joshua-andresen-690907262/',
-    photo: 'joshua.jpg',
   },
 ]
 
@@ -83,11 +95,7 @@ export default async function AboutPage({ params }: Props) {
     <div className="mx-auto max-w-4xl space-y-12">
       <div className="text-center">
         <h1 className="text-4xl font-bold">{dict.advisoryTeam.title}</h1>
-        <p className="text-muted-foreground mt-4 text-lg">
-          {lang === 'ar'
-            ? 'فريق من الخبراء والمتخصصين الملتزمين بتوثيق وحفظ ذكرى كل حياة ضائعة'
-            : 'A team of experts and specialists committed to documenting and preserving the memory of every life lost'}
-        </p>
+        <p className="text-muted-foreground mt-4 text-lg">{dict.advisoryTeam.subtitle}</p>
       </div>
 
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -127,18 +135,18 @@ export default async function AboutPage({ params }: Props) {
       {/* FAQ Section */}
       <div className="border-t pt-12">
         <h2 className="mb-8 text-center text-3xl font-bold">{dict.faq.title}</h2>
-        <div className="space-y-4">
+        <Accordion type="single" collapsible className="w-full">
           {dict.faq.questions.map((item, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <CardTitle className="text-left text-lg">{item.question}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{item.answer}</p>
-              </CardContent>
-            </Card>
+            <AccordionItem key={index} value={`item-${index}`}>
+              <AccordionTrigger className="text-left text-lg font-medium">
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground">
+                <p>{item.answer}</p>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </div>
     </div>
   )
