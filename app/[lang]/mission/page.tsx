@@ -8,14 +8,14 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params
-  const title = lang === 'ar' ? 'خارطة الطريق' : 'Roadmap'
+  const title = lang === 'ar' ? 'المهمة' : 'Mission'
 
   return {
     title,
   }
 }
 
-export default async function RoadmapPage({ params }: Props) {
+export default async function MissionPage({ params }: Props) {
   const { lang } = await params
 
   if (!['ar', 'en'].includes(lang)) {

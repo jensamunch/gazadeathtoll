@@ -39,13 +39,6 @@ type Dictionary = {
       secondaryButton: string
     }
   }
-  faq: {
-    title: string
-    questions: Array<{
-      question: string
-      answer: string
-    }>
-  }
 }
 
 type LandingPageProps = {
@@ -76,7 +69,7 @@ export default function LandingPage({ dict, locale }: LandingPageProps) {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="px-8 py-6 text-lg">
-                <Link href={`${basePath}/about`}>{t.hero.secondaryCta}</Link>
+                <Link href={`${basePath}/mission`}>{t.hero.secondaryCta}</Link>
               </Button>
             </div>
           </div>
@@ -103,25 +96,6 @@ export default function LandingPage({ dict, locale }: LandingPageProps) {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">{principle.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="bg-muted/30 px-6 py-20">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="mb-8 text-center text-3xl font-bold">{dict.faq.title}</h2>
-          <div className="space-y-4">
-            {dict.faq.questions.map((item, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <CardTitle className="text-left text-lg">{item.question}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{item.answer}</p>
                 </CardContent>
               </Card>
             ))}

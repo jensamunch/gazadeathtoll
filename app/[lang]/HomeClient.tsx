@@ -47,12 +47,19 @@ type Dictionary = {
   advisoryTeam: {
     title: string
     productLeader: string
+    productLeaderDesc: string
     geoDataTech: string
+    geoDataTechDesc: string
     visualArtist: string
+    visualArtistDesc: string
     strategistTechBuilder: string
+    strategistTechBuilderDesc: string
     technicalLead: string
+    technicalLeadDesc: string
     directorOfVideo: string
+    directorOfVideoDesc: string
     internationalLawyer: string
+    internationalLawyerDesc: string
   }
   home: {
     [key: string]: string
@@ -264,7 +271,7 @@ export default function HomeClient({ dict }: HomeProps) {
   if (!mounted) {
     return (
       <main className="p-6">
-        <div className="flex items-center justify-center py-24">Loading...</div>
+        <div className="flex items-center justify-center py-24">{tCommon('loading')}</div>
       </main>
     )
   }
@@ -883,10 +890,10 @@ function EditForm({
       </div>
       <div className="mt-2 flex justify-end gap-3">
         <Button variant="outline" onClick={onClose} disabled={saving} className="h-11 px-6">
-          Cancel
+          {tDialog('cancel')}
         </Button>
         <Button onClick={save} disabled={saving} className="h-11 px-6">
-          {saving ? 'Submitting…' : 'Propose changes'}
+          {saving ? tDialog('submitting') : tDialog('submit')}
         </Button>
       </div>
     </div>

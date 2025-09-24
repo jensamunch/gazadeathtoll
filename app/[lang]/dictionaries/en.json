@@ -5,21 +5,31 @@
   },
   "nav": {
     "title": "Gaza Death Toll",
-    "docs": "About",
-    "roadmap": "Roadmap",
+    "home": "Home",
+    "mission": "Mission",
+    "about": "About",
     "advisoryTeam": "Advisory team",
     "faq": "FAQ",
-    "database": "Database"
+    "database": "Database",
+    "switchToArabic": "العربية",
+    "switchToEnglish": "English"
   },
   "advisoryTeam": {
     "title": "Advisory Team",
     "productLeader": "Product leader",
+    "productLeaderDesc": "Leading product strategy and user experience design for humanitarian data platforms.",
     "geoDataTech": "Geo data tech & Activism",
+    "geoDataTechDesc": "Specializing in geospatial data analysis and digital activism for Palestinian rights.",
     "visualArtist": "Visual artist",
+    "visualArtistDesc": "Creating powerful visual narratives that humanize statistics and preserve memories.",
     "strategistTechBuilder": "Strategist & Tech builder",
+    "strategistTechBuilderDesc": "Building technology solutions that serve humanitarian causes and social justice.",
     "technicalLead": "Technical Lead",
+    "technicalLeadDesc": "Architecting scalable systems for data integrity and community-driven verification.",
     "directorOfVideo": "Director of video",
-    "internationalLawyer": "International lawyer & Legal academic"
+    "directorOfVideoDesc": "Documenting stories through film to amplify voices and preserve historical truth.",
+    "internationalLawyer": "International lawyer & Legal academic",
+    "internationalLawyerDesc": "Ensuring legal compliance and advocating for accountability in documentation efforts."
   },
   "home": {
     "list": "List",
@@ -167,11 +177,11 @@
       },
       {
         "question": "Who owns the data and how can it be used?",
-        "answer": "All of the data will be made available to the public as exported bulk files. The data and the technology platform will be covered by Open source and Open data licensing."
+        "answer": "All of the data will be made available to the public as exported bulk files. The data and the technology platform will be covered by open source and open data licensing."
       },
       {
         "question": "How is this project funded?",
-        "answer": "Already confirmed are sufficient to enable this project to reach its first milestone. From that point onwards it will require fundraising for its ongoing expenses (primarily technology infrastructure)."
+        "answer": "Already confirmed funding is sufficient to enable this project to reach its first milestone. From that point onwards it will require fundraising for its ongoing expenses (primarily technology infrastructure)."
       },
       {
         "question": "What is your relationship to Iraq Body Count and Tech4Palestine?",
@@ -183,7 +193,7 @@
       },
       {
         "question": "What is your relationship to the Gaza Ministry of Health?",
-        "answer": "Understandably, the Gaza MoH is very stretched currently and are providing their updates on deaths in their Telegram channel through PDFs. Today have no partnership or open channel with them."
+        "answer": "Understandably, the Gaza MoH is very stretched currently and is providing their updates on deaths in their Telegram channel through PDFs. Today we have no partnership or open channel with them."
       }
     ]
   }

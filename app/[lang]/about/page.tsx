@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import MDXWrapper from './MDXWrapper'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getDictionary } from '../dictionaries'
 
 type Person = {
@@ -80,43 +80,65 @@ export default async function AboutPage({ params }: Props) {
   const dict = await getDictionary(lang)
 
   return (
-    <div className="mx-auto max-w-2xl space-y-12">
-      <article className="prose lg:prose-xl">
-        <MDXWrapper lang={lang} />
-      </article>
+    <div className="mx-auto max-w-4xl space-y-12">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">{dict.advisoryTeam.title}</h1>
+        <p className="text-muted-foreground mt-4 text-lg">
+          {lang === 'ar'
+            ? 'فريق من الخبراء والمتخصصين الملتزمين بتوثيق وحفظ ذكرى كل حياة ضائعة'
+            : 'A team of experts and specialists committed to documenting and preserving the memory of every life lost'}
+        </p>
+      </div>
 
+      <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {people.map((p) => (
+          <li key={p.name} className="bg-card flex items-start gap-4 rounded-lg border p-4">
+            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full">
+              <Image
+                src={p.photo ? `/team/${p.photo}` : '/placeholder-male-square.png'}
+                alt={p.name}
+                width={64}
+                height={64}
+                className="h-16 w-16 rounded-full object-cover"
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 font-medium">
+                <Link
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline"
+                >
+                  {p.name}
+                </Link>
+              </div>
+              <div className="text-muted-foreground mb-2 text-sm font-medium">
+                {dict.advisoryTeam[p.titleKey as keyof typeof dict.advisoryTeam]}
+              </div>
+              <div className="text-muted-foreground text-sm leading-relaxed">
+                {dict.advisoryTeam[`${p.titleKey}Desc` as keyof typeof dict.advisoryTeam]}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      {/* FAQ Section */}
       <div className="border-t pt-12">
-        <h2 className="mb-8 text-3xl font-bold">{dict.advisoryTeam.title}</h2>
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {people.map((p) => (
-            <li key={p.name} className="flex items-center gap-3 p-2">
-              <div className="h-14 w-14 overflow-hidden rounded-full">
-                <Image
-                  src={p.photo ? `/team/${p.photo}` : '/placeholder-male-square.png'}
-                  alt={p.name}
-                  width={56}
-                  height={56}
-                  className="h-14 w-14 rounded-full object-cover"
-                />
-              </div>
-              <div className="min-w-0">
-                <div className="truncate font-medium">
-                  <Link
-                    href={p.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline"
-                  >
-                    {p.name}
-                  </Link>
-                </div>
-                <div className="text-muted-foreground truncate text-sm">
-                  {dict.advisoryTeam[p.titleKey as keyof typeof dict.advisoryTeam]}
-                </div>
-              </div>
-            </li>
+        <h2 className="mb-8 text-center text-3xl font-bold">{dict.faq.title}</h2>
+        <div className="space-y-4">
+          {dict.faq.questions.map((item, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle className="text-left text-lg">{item.question}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{item.answer}</p>
+              </CardContent>
+            </Card>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   )
