@@ -2,8 +2,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowRight, Database, Users, Heart } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowRight, Heart } from 'lucide-react'
 
 type Dictionary = {
   metadata: {
@@ -12,9 +12,14 @@ type Dictionary = {
   }
   nav: {
     title: string
-    docs: string
+    home: string
+    mission: string
+    about: string
     advisoryTeam: string
     faq: string
+    database: string
+    switchToArabic: string
+    switchToEnglish: string
   }
   landing: {
     hero: {

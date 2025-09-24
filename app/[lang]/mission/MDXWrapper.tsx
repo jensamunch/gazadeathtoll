@@ -9,7 +9,7 @@ type MDXWrapperProps = {
 
 export default function MDXWrapper({ lang }: MDXWrapperProps) {
   const [Content, setContent] = useState<React.ComponentType | null>(null)
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<{ common: { loading: string } } | null>(null)
 
   useEffect(() => {
     const loadContent = async () => {

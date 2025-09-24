@@ -41,8 +41,14 @@ type Dictionary = {
   }
   nav: {
     title: string
-    docs: string
+    home: string
+    mission: string
+    about: string
     advisoryTeam: string
+    faq: string
+    database: string
+    switchToArabic: string
+    switchToEnglish: string
   }
   advisoryTeam: {
     title: string
@@ -688,6 +694,7 @@ export default function HomeClient({ dict }: HomeProps) {
               defaultDod={dodForId(editing.id)}
               defaultGeo={geoForId(editing.id)}
               defaultCategory={categoryForId(editing.id)}
+              dict={dict}
               onClose={() => setEditing(null)}
               onSaved={() => {
                 setEditing(null)
@@ -729,6 +736,7 @@ function EditForm({
   defaultDod,
   defaultGeo,
   defaultCategory,
+  dict,
   onClose,
   onSaved,
 }: {
@@ -737,9 +745,19 @@ function EditForm({
   defaultDod: string
   defaultGeo: { lat: number; lon: number }
   defaultCategory: string
+  dict: Dictionary
   onClose: () => void
   onSaved: () => void
 }) {
+  const tDialog = (key: string, params?: Record<string, string | number>) => {
+    let text = dict.dialog[key as keyof typeof dict.dialog] || key
+    if (params && typeof text === 'string') {
+      Object.entries(params).forEach(([k, v]) => {
+        text = (text as string).replace(`{${k}}`, String(v))
+      })
+    }
+    return text
+  }
   const [saving, setSaving] = useState(false)
   // Mock, community-proposed fields
   const [dod, setDod] = useState<string>(() => String(defaultDod).slice(0, 10))
