@@ -60,6 +60,12 @@ export default function Header() {
             {t.about}
           </Link>
           <Link
+            href={`${basePath}/roadmap`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.roadmap}
+          </Link>
+          <Link
             href={`${basePath}/database`}
             className="text-muted-foreground text-sm hover:underline"
           >
