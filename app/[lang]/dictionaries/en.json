@@ -63,7 +63,15 @@
     "civilian": "civilian",
     "medicalStaff": "medical staff",
     "journalist": "journalist",
-    "other": "other"
+    "other": "other",
+    "versionHistory": "Version History",
+    "version": "Version",
+    "timeUpdated": "Time Updated",
+    "sourceOfUpdate": "Source of Update",
+    "selectVersion": "Select Version",
+    "recordStatus": "Record Status",
+    "active": "Active",
+    "deleted": "Deleted"
   },
   "common": {
     "loading": "Loading...",

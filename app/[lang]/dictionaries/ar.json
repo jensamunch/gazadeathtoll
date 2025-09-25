@@ -63,7 +63,15 @@
     "civilian": "مدني",
     "medicalStaff": "طاقم طبي",
     "journalist": "صحفي",
-    "other": "أخرى"
+    "other": "أخرى",
+    "versionHistory": "تاريخ الإصدارات",
+    "version": "الإصدار",
+    "timeUpdated": "وقت التحديث",
+    "sourceOfUpdate": "مصدر التحديث",
+    "selectVersion": "اختر الإصدار",
+    "recordStatus": "حالة السجل",
+    "active": "نشط",
+    "deleted": "محذوف"
   },
   "common": {
     "loading": "جارٍ التحميل...",
