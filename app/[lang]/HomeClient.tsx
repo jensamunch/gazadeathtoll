@@ -153,7 +153,7 @@ export default function HomeClient({ dict }: HomeProps) {
   const handlePersonClick = useCallback(
     (person: Person) => {
       const basePath = pathname.startsWith('/en') ? '/en' : ''
-      router.push(`${basePath}/people/${person.id}`)
+      router.push(`${basePath}/person/${person.id}`)
     },
     [router, pathname]
   )
