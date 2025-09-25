@@ -180,19 +180,46 @@ export default function PersonDetail({ person, dict, lang }: PersonDetailProps) 
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Image */}
-          {hasImage && (
-            <div className="flex justify-center">
-              <div className="relative h-48 w-48 overflow-hidden rounded-lg">
-                <Image
-                  src={squareImageUrlForId()}
-                  alt={person.name}
-                  fill
-                  className="object-cover"
-                />
+          {/* Photo and Map Section */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {/* Photo */}
+            <div className="space-y-2">
+              <h3 className="text-muted-foreground font-semibold">{t('image')}</h3>
+              <div className="flex justify-center">
+                <div className="relative h-64 w-64 overflow-hidden rounded-lg border">
+                  {hasImage ? (
+                    <Image
+                      src={squareImageUrlForId()}
+                      alt={person.name}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="bg-muted/60 flex h-full w-full items-center justify-center">
+                      <span className="text-muted-foreground text-sm">
+                        {lang === 'ar' ? 'لا توجد صورة' : 'No image available'}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          )}
+
+            {/* Interactive Map */}
+            <div className="space-y-2">
+              <h3 className="text-muted-foreground font-semibold">{t('locationOfDeath')}</h3>
+              <div className="h-64 w-full overflow-hidden rounded-lg border">
+                <LeafletMap
+                  lat={geo.lat}
+                  lon={geo.lon}
+                  onChange={() => {}} // Read-only map
+                />
+              </div>
+              <p className="text-muted-foreground text-center text-sm">
+                {geo.lat.toFixed(4)}, {geo.lon.toFixed(4)}
+              </p>
+            </div>
+          </div>
 
           {/* Basic Information */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -233,13 +260,6 @@ export default function PersonDetail({ person, dict, lang }: PersonDetailProps) 
             </div>
           </div>
 
-          {/* Location */}
-          <div>
-            <h3 className="text-muted-foreground font-semibold">{t('locationOfDeath')}</h3>
-            <p className="font-mono text-sm">
-              {geo.lat.toFixed(4)}, {geo.lon.toFixed(4)}
-            </p>
-          </div>
 
           {/* Source */}
           {person.source && (
