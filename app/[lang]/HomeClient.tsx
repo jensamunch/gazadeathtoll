@@ -150,10 +150,13 @@ export default function HomeClient({ dict }: HomeProps) {
   }, [])
 
   // Navigation to person detail page
-  const handlePersonClick = useCallback((person: Person) => {
-    const basePath = pathname.startsWith('/en') ? '/en' : ''
-    router.push(`${basePath}/people/${person.id}`)
-  }, [router, pathname])
+  const handlePersonClick = useCallback(
+    (person: Person) => {
+      const basePath = pathname.startsWith('/en') ? '/en' : ''
+      router.push(`${basePath}/people/${person.id}`)
+    },
+    [router, pathname]
+  )
 
   // Filters
   const [nameFilter, setNameFilter] = useState('')

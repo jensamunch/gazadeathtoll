@@ -10,7 +10,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang, id } = await params
-  
+
   try {
     const person = await prisma.person.findUnique({ where: { id } })
     if (!person) {
@@ -20,9 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     const title = lang === 'ar' ? `${person.name} - ضحايا غزة` : `${person.name} - Gaza Death Toll`
-    const description = lang === 'ar' 
-      ? `سجل ${person.name} في قاعدة بيانات ضحايا غزة`
-      : `Record of ${person.name} in Gaza Death Toll database`
+    const description =
+      lang === 'ar'
+        ? `سجل ${person.name} في قاعدة بيانات ضحايا غزة`
+        : `Record of ${person.name} in Gaza Death Toll database`
 
     return {
       title,
