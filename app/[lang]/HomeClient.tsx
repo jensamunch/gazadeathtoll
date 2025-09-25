@@ -8,6 +8,7 @@ import {
 } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -83,6 +84,8 @@ type HomeProps = {
 }
 
 export default function HomeClient({ dict }: HomeProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<Person[]>([])
   const [total, setTotal] = useState(0)
@@ -145,6 +148,12 @@ export default function HomeClient({ dict }: HomeProps) {
   const hideTooltip = useCallback(() => {
     setTooltip((t) => ({ ...t, visible: false }))
   }, [])
+
+  // Navigation to person detail page
+  const handlePersonClick = useCallback((person: Person) => {
+    const basePath = pathname.startsWith('/en') ? '/en' : ''
+    router.push(`${basePath}/people/${person.id}`)
+  }, [router, pathname])
 
   // Filters
   const [nameFilter, setNameFilter] = useState('')
@@ -544,7 +553,7 @@ export default function HomeClient({ dict }: HomeProps) {
                 <TableRow
                   key={p.id}
                   className="cursor-pointer"
-                  onClick={() => setEditing(p)}
+                  onClick={() => handlePersonClick(p)}
                   onMouseEnter={showTooltip(t('submitChangesTooltip'))}
                   onMouseMove={moveTooltip}
                   onMouseLeave={hideTooltip}
