@@ -45,19 +45,19 @@ export default function Header() {
       <div className="flex items-center justify-between px-3 py-4 md:px-4 md:py-5 lg:px-6">
         <nav className="flex items-center gap-4">
           <Link href={`${basePath}/`} className="text-muted-foreground text-sm hover:underline">
-            Home
+            {t.home}
+          </Link>
+          <Link
+            href={`${basePath}/mission`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.mission}
           </Link>
           <Link
             href={`${basePath}/about`}
             className="text-muted-foreground text-sm hover:underline"
           >
-            {t.docs}
-          </Link>
-          <Link
-            href={`${basePath}/roadmap`}
-            className="text-muted-foreground text-sm hover:underline"
-          >
-            {t.roadmap}
+            {t.about}
           </Link>
           <Link
             href={`${basePath}/database`}
@@ -83,7 +83,7 @@ export default function Header() {
             style={{ borderColor: 'var(--border)' }}
             aria-label="Toggle language"
           >
-            {locale === 'en' ? 'العربية' : 'English'}
+            {locale === 'en' ? t.switchToArabic : t.switchToEnglish}
           </button>
         </div>
       </div>
