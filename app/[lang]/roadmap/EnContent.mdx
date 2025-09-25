@@ -1,0 +1,88 @@
+import ProseImage from '@/components/ProseImage'
+
+# Evaluation
+
+- Establish advisory board with a strong and diverse Palestinian voice
+- Build clear product plan for Phase 1 and Phase 2 of project
+- Financial certainty for phase 1/2 launch and first 12 months running costs
+- Gather feedback from advisory board and community
+- Summarise feedback into Project Evaluation Memorandum
+- Clear decision point by Advisory team on whether this project goes ahead
+
+# Organisational
+
+- Establish a Charitable Incorporated Organisation (UK) or equivalent
+- Advisory Board to affirm Constitution for CIO (dictates oversight and management)
+- Establish appropriate licenses for code and data (to ensure community ownership)
+- Establish Code of Conduct and cultural document
+
+# Phase 1 - Foundations
+
+### Definitions
+
+1. **Visitors**
+   Members of the public, including journalists or researchers looking for a trusted source of data. Others will visit to understand the scale of suffering. Most will arrive from social media.
+2. **Users**
+   Signs up for an account, allowing them to flag duplicates & errors, or augment existing data with personal details (eg. photos, date of death). Most will be friends or family of deceased.
+3. **Moderators**
+   Highly trusted small community (fewer than 20) who volunteer to review and approve contributions from Users. Their decisions are taken according to clearly defined policies.
+4. **Administrator**
+   Uploads bulk data from Gaza Ministry of Health. Approve Editors and handle escalations.
+
+### Objectives
+
+1. Enhance the [Palestine Dataset](https://data.techforpalestine.org/docs/datasets/) with cumulative version history of MoH updates, allowing changes to be tracked over time.
+2. Establish the core platform and governance model.
+3. Communicate goals with Palestinian networks and potential moderators
+
+### Key Features
+
+- Open source web app (responsive, secure, hosted on ethical tech).
+-  Language support: geolocated default, Arabic/English switch.
+
+### Visitor functionality
+    - Total deaths and breakdown statistics.
+    - Table of records with filters, including MoH version/date.
+    - Individual record pages with MoH data + version history (proxy for date of death).
+
+<ProseImage src="/roadmap/details.png" alt="Initial database view" caption="Initial database view" bleed="lg" />
+
+### Admin functionality
+    - MoH data upload & difference resolution (create/update/delete).
+    - Version history of uploads (with name, date, notes).
+    - User & API management (internal + external use).
+
+<ProseImage src="/roadmap/data.png" alt="Admin data management tools" caption="Admin data management tools" bleed="lg" />
+
+# Phase 2 - Contributions
+
+### Objectives
+
+1. Enable users to contribute personal details that humanise MoH records.
+2. Build a network to moderate contributions.
+3. Share verified corrections back to MoH to strengthen the source dataset.
+
+### User functionality
+    - Visitors can sign up.
+    - Users can flag duplicates/inaccuracies or add details (photos, biography, circumstances).
+    - All contributions logged in record history.
+
+<ProseImage src="/roadmap/contribute.png" alt="Contribute" caption="Contribution flow" bleed="lg" />
+
+### Moderator functionality
+    - Admins invite moderators
+    - Moderators manage a prioritised inbox of flags & contributions (accept/decline/escalate).
+    - Full audit trail of decisions (user, editor, date, notes).
+
+<ProseImage src="/roadmap/inbox.png" alt="Inbox" caption="Moderator inbox" bleed="lg" />
+
+### Admin functionality
+    - Deliver corrections back to MoH.
+    - Track discrepancies across imports.
+
+### Metrics
+- Visitor traffic
+- Time on site
+- Contribution volume
+
+

@@ -8,6 +8,7 @@
     "home": "Home",
     "mission": "Mission",
     "about": "About",
+    "roadmap": "Roadmap",
     "advisoryTeam": "Advisory team",
     "faq": "FAQ",
     "database": "Database",
@@ -16,7 +17,7 @@
   },
   "advisoryTeam": {
     "title": "Advisory Team",
-    "subtitle": "A team of experts and specialists committed to documenting and preserving the memory of every life lost",
+    "subtitle": "A diverse team committed to preserving the memory of every life lost",
     "dimaHamdan": "Journalist and filmmaker",
     "dimaHamdanDesc": "Manager of the Marie Colvin Journalists’ Network (MCJN) | Media Trainer & Consultant",
     "productLeader": "Product leader",
