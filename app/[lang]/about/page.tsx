@@ -95,7 +95,6 @@ export default async function AboutPage({ params }: Props) {
     <div className="mx-auto max-w-4xl space-y-12">
       <div className="text-center">
         <h1 className="text-4xl font-bold">{dict.advisoryTeam.title}</h1>
-        <p className="text-muted-foreground mt-4 text-lg">{dict.advisoryTeam.subtitle}</p>
       </div>
 
       <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
