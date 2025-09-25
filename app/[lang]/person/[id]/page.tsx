@@ -52,7 +52,7 @@ export default async function PersonPage({ params }: Props) {
     const dict = await getDictionary(lang)
 
     return (
-      <div className="mx-auto max-w-4xl space-y-8 p-6">
+      <div className="mx-auto max-w-4xl space-y-8 px-6 pt-2 pb-6">
         <PersonDetail person={person} dict={dict} lang={lang} />
       </div>
     )
