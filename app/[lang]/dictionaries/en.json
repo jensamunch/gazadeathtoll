@@ -5,21 +5,35 @@
   },
   "nav": {
     "title": "Gaza Death Toll",
-    "docs": "About",
+    "home": "Home",
+    "mission": "Mission",
+    "about": "About",
     "roadmap": "Roadmap",
     "advisoryTeam": "Advisory team",
     "faq": "FAQ",
-    "database": "Database"
+    "database": "Database",
+    "switchToArabic": "العربية",
+    "switchToEnglish": "English"
   },
   "advisoryTeam": {
     "title": "Advisory Team",
+    "subtitle": "A diverse team committed to preserving the memory of every life lost",
+    "dimaHamdan": "Journalist and filmmaker",
+    "dimaHamdanDesc": "Manager of the Marie Colvin Journalists’ Network (MCJN) | Media Trainer & Consultant",
     "productLeader": "Product leader",
-    "geoDataTech": "Geo data tech & Activism",
+    "productLeaderDesc": "20 years of experience in product design and 8 years as a founder of UK tech startup",
+    "geoDataTech": "Geo data & Activism",
+    "geoDataTechDesc": "Open-source GIS for NGOs, humanitarian meets tech, making data fun & interactive",
     "visualArtist": "Visual artist",
-    "strategistTechBuilder": "Strategist & Tech builder",
+    "visualArtistDesc": "Artist foocused on feminist work through photography, video, installation, and performance",
+    "strategistTechBuilder": "Entrepreneur & Builder",
+    "strategistTechBuilderDesc": "Building technology solutions that serve humanitarian causes and social justice",
     "technicalLead": "Technical Lead",
+    "technicalLeadDesc": "From product to execution. Full-Stack Engineer, Technical Lead, Scalable Systems Architect",
     "directorOfVideo": "Director of video",
-    "internationalLawyer": "International lawyer & Legal academic"
+    "directorOfVideoDesc": "Award winning director.He has shot for e.g. Guardian, BBC, Monocle, WIRED, and Vice",
+    "internationalLawyer": "International lawyer & Legal academic",
+    "internationalLawyerDesc": "International lawyer with expertise in law of armed conflict and international human rights"
   },
   "home": {
     "list": "List",
@@ -43,13 +57,21 @@
     "categoryHeader": "Category",
     "image": "Image",
     "communitySubmission": "Mock data - Community contribution",
-    "submitChangesTooltip": "Propose changes",
+    "submitChangesTooltip": "View record",
     "dobAndDod": "Date of birth {dob} • Date of death {dod}",
     "all": "All",
     "civilian": "civilian",
     "medicalStaff": "medical staff",
     "journalist": "journalist",
-    "other": "other"
+    "other": "other",
+    "versionHistory": "Version History",
+    "version": "Version",
+    "timeUpdated": "Time Updated",
+    "sourceOfUpdate": "Source of Update",
+    "selectVersion": "Select Version",
+    "recordStatus": "Record Status",
+    "active": "Active",
+    "deleted": "Deleted"
   },
   "common": {
     "loading": "Loading...",
@@ -159,7 +181,7 @@
     "questions": [
       {
         "question": "Words matter. Why do you refer to deaths?",
-        "answer": "Palestinians use the Arabic word 'shahid' from the Arabic root sh-h-d, meaning \"to witness,\" \"to be present,\" or \"to testify\". In Islam, shahid refers to someone who dies while defending their faith, family, or community in battle, or for other religious causes. Casualty of war is an English euphemism, glossing over the topic of responsibility and asymmetry. Murder requires a specific intent which is missing in systemic and cultural genocide. We chose deaths as a neutral and specific word to not detract from the objectivity of the data."
+        "answer": "Casualty is a euphemism, murder requires individual intent, shahid possibly excludes those who don't subscribe to religious purpose. We chose deaths as a neutral and specific word to not detract from the objectivity of the data."
       },
       {
         "question": "Who is involved in this project?",
@@ -167,11 +189,11 @@
       },
       {
         "question": "Who owns the data and how can it be used?",
-        "answer": "All of the data will be made available to the public as exported bulk files. The data and the technology platform will be covered by Open source and Open data licensing."
+        "answer": "All of the data will be made available to the public as exported bulk files. The data and the technology platform will be covered by open source and open data licensing."
       },
       {
         "question": "How is this project funded?",
-        "answer": "Already confirmed are sufficient to enable this project to reach its first milestone. From that point onwards it will require fundraising for its ongoing expenses (primarily technology infrastructure)."
+        "answer": "Already confirmed funding is sufficient to enable this project to reach its first milestone. From that point onwards it will require fundraising for its ongoing expenses (primarily technology infrastructure)."
       },
       {
         "question": "What is your relationship to Iraq Body Count and Tech4Palestine?",
@@ -183,7 +205,7 @@
       },
       {
         "question": "What is your relationship to the Gaza Ministry of Health?",
-        "answer": "Understandably, the Gaza MoH is very stretched currently and are providing their updates on deaths in their Telegram channel through PDFs. We will engage with them in every way we can, and provide them with assistance in the generation of their future data updates but today have no partnership or open channel with them."
+        "answer": "Understandably, the Gaza MoH is very stretched currently and is providing their updates on deaths in their Telegram channel through PDFs. Today we have no partnership or open channel with them."
       }
     ]
   }

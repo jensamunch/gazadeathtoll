@@ -8,6 +8,7 @@ import {
 } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter, usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -41,18 +42,31 @@ type Dictionary = {
   }
   nav: {
     title: string
-    docs: string
+    home: string
+    mission: string
+    about: string
     advisoryTeam: string
+    faq: string
+    database: string
+    switchToArabic: string
+    switchToEnglish: string
   }
   advisoryTeam: {
     title: string
     productLeader: string
+    productLeaderDesc: string
     geoDataTech: string
+    geoDataTechDesc: string
     visualArtist: string
+    visualArtistDesc: string
     strategistTechBuilder: string
+    strategistTechBuilderDesc: string
     technicalLead: string
+    technicalLeadDesc: string
     directorOfVideo: string
+    directorOfVideoDesc: string
     internationalLawyer: string
+    internationalLawyerDesc: string
   }
   home: {
     [key: string]: string
@@ -70,6 +84,8 @@ type HomeProps = {
 }
 
 export default function HomeClient({ dict }: HomeProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
   const [data, setData] = useState<Person[]>([])
   const [total, setTotal] = useState(0)
@@ -132,6 +148,15 @@ export default function HomeClient({ dict }: HomeProps) {
   const hideTooltip = useCallback(() => {
     setTooltip((t) => ({ ...t, visible: false }))
   }, [])
+
+  // Navigation to person detail page
+  const handlePersonClick = useCallback(
+    (person: Person) => {
+      const basePath = pathname.startsWith('/en') ? '/en' : ''
+      router.push(`${basePath}/person/${person.id}`)
+    },
+    [router, pathname]
+  )
 
   // Filters
   const [nameFilter, setNameFilter] = useState('')
@@ -264,7 +289,7 @@ export default function HomeClient({ dict }: HomeProps) {
   if (!mounted) {
     return (
       <main className="p-6">
-        <div className="flex items-center justify-center py-24">Loading...</div>
+        <div className="flex items-center justify-center py-24">{tCommon('loading')}</div>
       </main>
     )
   }
@@ -531,7 +556,7 @@ export default function HomeClient({ dict }: HomeProps) {
                 <TableRow
                   key={p.id}
                   className="cursor-pointer"
-                  onClick={() => setEditing(p)}
+                  onClick={() => handlePersonClick(p)}
                   onMouseEnter={showTooltip(t('submitChangesTooltip'))}
                   onMouseMove={moveTooltip}
                   onMouseLeave={hideTooltip}
@@ -681,6 +706,7 @@ export default function HomeClient({ dict }: HomeProps) {
               defaultDod={dodForId(editing.id)}
               defaultGeo={geoForId(editing.id)}
               defaultCategory={categoryForId(editing.id)}
+              dict={dict}
               onClose={() => setEditing(null)}
               onSaved={() => {
                 setEditing(null)
@@ -722,6 +748,7 @@ function EditForm({
   defaultDod,
   defaultGeo,
   defaultCategory,
+  dict,
   onClose,
   onSaved,
 }: {
@@ -730,9 +757,19 @@ function EditForm({
   defaultDod: string
   defaultGeo: { lat: number; lon: number }
   defaultCategory: string
+  dict: Dictionary
   onClose: () => void
   onSaved: () => void
 }) {
+  const tDialog = (key: string, params?: Record<string, string | number>) => {
+    let text = dict.dialog[key as keyof typeof dict.dialog] || key
+    if (params && typeof text === 'string') {
+      Object.entries(params).forEach(([k, v]) => {
+        text = (text as string).replace(`{${k}}`, String(v))
+      })
+    }
+    return text
+  }
   const [saving, setSaving] = useState(false)
   // Mock, community-proposed fields
   const [dod, setDod] = useState<string>(() => String(defaultDod).slice(0, 10))
@@ -883,10 +920,10 @@ function EditForm({
       </div>
       <div className="mt-2 flex justify-end gap-3">
         <Button variant="outline" onClick={onClose} disabled={saving} className="h-11 px-6">
-          Cancel
+          {tDialog('cancel')}
         </Button>
         <Button onClick={save} disabled={saving} className="h-11 px-6">
-          {saving ? 'Submitting…' : 'Propose changes'}
+          {saving ? tDialog('submitting') : tDialog('submit')}
         </Button>
       </div>
     </div>

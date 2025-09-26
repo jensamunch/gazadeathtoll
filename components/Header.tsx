@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Github } from 'lucide-react'
+import { Github, Menu, X } from 'lucide-react'
 
 // Import dictionaries directly as JSON (not server-only)
 import enDict from '../app/[lang]/dictionaries/en.json'
@@ -11,6 +11,7 @@ import arDict from '../app/[lang]/dictionaries/ar.json'
 export default function Header() {
   const pathname = usePathname()
   const [locale, setLocale] = useState<'en' | 'ar'>('ar')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // Determine current locale from pathname
   useEffect(() => {
@@ -20,6 +21,31 @@ export default function Header() {
       setLocale('ar')
     }
   }, [pathname])
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMobileMenuOpen) {
+        const target = event.target as Element
+        if (!target.closest('header')) {
+          setIsMobileMenuOpen(false)
+        }
+      }
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isMobileMenuOpen])
 
   const toggleLocale = () => {
     const currentIsEn = pathname.startsWith('/en')
@@ -40,18 +66,36 @@ export default function Header() {
   const t = dict.nav
   const basePath = locale === 'en' ? '/en' : ''
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false)
+  }
+
   return (
-    <header className="w-full border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" style={{ borderColor: 'var(--border)' }}>
+    <header
+      className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
+      style={{ borderColor: 'var(--border)' }}
+    >
       <div className="flex items-center justify-between px-3 py-4 md:px-4 md:py-5 lg:px-6">
-        <nav className="flex items-center gap-4">
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-4 md:flex">
           <Link href={`${basePath}/`} className="text-muted-foreground text-sm hover:underline">
-            Home
+            {t.home}
+          </Link>
+          <Link
+            href={`${basePath}/mission`}
+            className="text-muted-foreground text-sm hover:underline"
+          >
+            {t.mission}
           </Link>
           <Link
             href={`${basePath}/about`}
             className="text-muted-foreground text-sm hover:underline"
           >
-            {t.docs}
+            {t.about}
           </Link>
           <Link
             href={`${basePath}/roadmap`}
@@ -66,7 +110,18 @@ export default function Header() {
             {t.database}
           </Link>
         </nav>
-        <div className="flex items-center gap-2">
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={toggleMobileMenu}
+          className="hover:bg-muted rounded-md p-2 transition-colors md:hidden"
+          aria-label="Toggle mobile menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Desktop Actions */}
+        <div className="hidden items-center gap-2 md:flex">
           <a
             href="https://github.com/jensamunch/gazadeaths"
             target="_blank"
@@ -83,9 +138,75 @@ export default function Header() {
             style={{ borderColor: 'var(--border)' }}
             aria-label="Toggle language"
           >
-            {locale === 'en' ? 'العربية' : 'English'}
+            {locale === 'en' ? t.switchToArabic : t.switchToEnglish}
           </button>
         </div>
+
+        {/* Mobile Actions */}
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href="https://github.com/jensamunch/gazadeaths"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground p-2 transition-colors"
+            aria-label="View source code on GitHub"
+          >
+            <Github size={20} />
+          </a>
+          <button
+            type="button"
+            onClick={toggleLocale}
+            className="hover:bg-muted rounded-md border-2 px-3 py-1.5 text-xs font-medium transition-colors"
+            style={{ borderColor: 'var(--border)' }}
+            aria-label="Toggle language"
+          >
+            {locale === 'en' ? t.switchToArabic : t.switchToEnglish}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      <div
+        className={`overflow-hidden border-t transition-all duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+        style={{ borderColor: 'var(--border)' }}
+      >
+        <nav className="space-y-3 px-3 py-4">
+          <Link
+            href={`${basePath}/`}
+            className="text-muted-foreground hover:text-foreground block py-2 text-sm transition-colors hover:underline"
+            onClick={closeMobileMenu}
+          >
+            {t.home}
+          </Link>
+          <Link
+            href={`${basePath}/mission`}
+            className="text-muted-foreground hover:text-foreground block py-2 text-sm transition-colors hover:underline"
+            onClick={closeMobileMenu}
+          >
+            {t.mission}
+          </Link>
+          <Link
+            href={`${basePath}/about`}
+            className="text-muted-foreground hover:text-foreground block py-2 text-sm transition-colors hover:underline"
+            onClick={closeMobileMenu}
+          >
+            {t.about}
+          </Link>
+          <Link
+            href={`${basePath}/roadmap`}
+            className="text-muted-foreground hover:text-foreground block py-2 text-sm transition-colors hover:underline"
+            onClick={closeMobileMenu}
+          >
+            {t.roadmap}
+          </Link>
+          <Link
+            href={`${basePath}/database`}
+            className="text-muted-foreground hover:text-foreground block py-2 text-sm transition-colors hover:underline"
+            onClick={closeMobileMenu}
+          >
+            {t.database}
+          </Link>
+        </nav>
       </div>
     </header>
   )
