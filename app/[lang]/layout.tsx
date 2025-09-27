@@ -61,7 +61,7 @@ export default async function LocaleLayout({
           }}
         />
       </head>
-      <body className="min-h-screen">
+      <body className="min-h-screen" suppressHydrationWarning>
         <DirectionWrapper dir={dir}>
           <Header />
           <main className="px-6 py-8 md:px-10 md:py-12 lg:px-16 lg:py-16 xl:px-24 2xl:px-32">

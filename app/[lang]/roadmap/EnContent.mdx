@@ -41,9 +41,9 @@ import ProseImage from '@/components/ProseImage'
 -  Language support: geolocated default, Arabic/English switch.
 
 ### Visitor functionality
-    - Total deaths and breakdown statistics.
-    - Table of records with filters, including MoH version/date.
-    - Individual record pages with MoH data + version history (proxy for date of death).
+    - View total deaths and breakdown statistics.
+    - View table of records with filters, including MoH version/date.
+    - View individual record pages with MoH data + version history (proxy for date of death).
 
 <ProseImage src="/roadmap/details.png" alt="Initial database view" caption="Initial database view" bleed="lg" />
 
@@ -64,21 +64,26 @@ import ProseImage from '@/components/ProseImage'
 
 ### User functionality
     - Visitors can sign up.
-    - Users can flag duplicates/inaccuracies or add details (photos, biography, circumstances).
-    - All contributions logged in record history.
+    - Users can make contributions: 
+        - Flag record duplicates or inaccuracies
+        - Add details to a record (photos, home lat/long, circumstances)
+        - Report person missing (ie. a new record) - clearly marked as unverified until MoH include in their data
+    - Approved contributions and user details are logged in record history.
 
 <ProseImage src="/roadmap/contribute.png" alt="Contribute" caption="Contribution flow" bleed="lg" />
 
 ### Moderator functionality
     - Admins invite moderators
-    - Moderators manage a prioritised inbox of flags & contributions (accept/decline/escalate).
+    - Moderators manage a prioritised inbox of flags & contributions (accept/decline/escalate)
+    - Review and validate new missing persons
     - Full audit trail of decisions (user, editor, date, notes).
 
 <ProseImage src="/roadmap/inbox.png" alt="Inbox" caption="Moderator inbox" bleed="lg" />
 
 ### Admin functionality
-    - Deliver corrections back to MoH.
-    - Track discrepancies across imports.
+    - Deliver corrections back to MoH
+    - Report new person missing for validation
+    - Track discrepancies across imports
 
 ### Metrics
 - Visitor traffic
