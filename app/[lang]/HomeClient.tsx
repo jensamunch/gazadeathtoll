@@ -92,7 +92,7 @@ export default function HomeClient({ dict }: HomeProps) {
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(50)
   const [loading, setLoading] = useState(false)
-  const [view, setView] = useState<'list' | 'gallery'>('list')
+  const [view, setView] = useState<'list' | 'gallery'>('gallery')
   const [editing, setEditing] = useState<Person | null>(null)
   const [showSlideshow, setShowSlideshow] = useState(false)
   // Use dictionary-based translations with interpolation support
@@ -300,18 +300,18 @@ export default function HomeClient({ dict }: HomeProps) {
         <div className="flex items-center">
           <div className="inline-flex items-center gap-1">
             <Button
-              variant={view === 'list' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setView('list')}
-            >
-              {t('list')}
-            </Button>
-            <Button
               variant={view === 'gallery' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setView('gallery')}
             >
               {t('gallery')}
+            </Button>
+            <Button
+              variant={view === 'list' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setView('list')}
+            >
+              {t('list')}
             </Button>
             <Button
               variant="outline"
@@ -332,7 +332,7 @@ export default function HomeClient({ dict }: HomeProps) {
             </Button>
           </div>
         </div>
-        <div className="mt-2 flex items-center lg:mt-0 lg:ml-auto">
+        <div className="mt-2 flex items-center lg:mt-0 lg:ml-8">
           <div className="inline-flex items-center">
             <div className="mr-2 flex w-full items-center lg:mr-8">
               <Input
@@ -609,7 +609,14 @@ export default function HomeClient({ dict }: HomeProps) {
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {galleryData.map((p) => (
-                <div key={p.id} className="overflow-hidden rounded-md border">
+                <div
+                  key={p.id}
+                  className="cursor-pointer overflow-hidden rounded-md border transition-shadow hover:shadow-md"
+                  onClick={() => handlePersonClick(p)}
+                  onMouseEnter={showTooltip(t('submitChangesTooltip'))}
+                  onMouseMove={moveTooltip}
+                  onMouseLeave={hideTooltip}
+                >
                   <Image
                     src={squareImageUrlForId()}
                     alt={p.name || p.enName || p.id}
